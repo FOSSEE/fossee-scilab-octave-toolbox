@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE book [
+<!--Begin Entities-->
+<!ENTITY a3c720556a45fcfc7745ee792a9fe633d SYSTEM "/home/rupak/scilab-toolbox/scilab_octave/help/fr_FR/c_multiplybypi.xml">
+<!ENTITY a7f9c6ce18a641788fa6e4e43e6e731d0 SYSTEM "/home/rupak/scilab-toolbox/scilab_octave/help/fr_FR/c_sub.xml">
+<!ENTITY a9c6d0d701d8705951efd170fe90c8a6c SYSTEM "/home/rupak/scilab-toolbox/scilab_octave/help/fr_FR/c_sum.xml">
+<!ENTITY a6afc5da7e543babe545fcbd230790f42 SYSTEM "/home/rupak/scilab-toolbox/scilab_octave/help/fr_FR/fortran_sum.xml">
+<!ENTITY abbd0f768aa6903678007f2e97672bb05 SYSTEM "/home/rupak/scilab-toolbox/scilab_octave/help/fr_FR/scilab_sum.xml">
+<!--End Entities-->
+]>
+<book version="5.0-subset Scilab" xml:lang="fr_FR"
+      xmlns="http://docbook.org/ns/docbook"
+      xmlns:xlink="http://www.w3.org/1999/xlink"
+      xmlns:xi="http://www.w3.org/2001/XInclude"
+      xmlns:svg="http://www.w3.org/2000/svg"
+      xmlns:mml="http://www.w3.org/1998/Math/MathML"
+      xmlns:html="http://www.w3.org/1999/xhtml"
+      xmlns:db="http://docbook.org/ns/docbook">
+  <info xml:id='scilab_toolbox_manual'>
+    <title>scilab_toolbox</title>
+  </info>
+
+<part xml:id='section_6167af851f1275359a6b7e92eff5396f'>
+<title>scilab_toolbox</title>
+&a3c720556a45fcfc7745ee792a9fe633d;
+&a7f9c6ce18a641788fa6e4e43e6e731d0;
+&a9c6d0d701d8705951efd170fe90c8a6c;
+&a6afc5da7e543babe545fcbd230790f42;
+&abbd0f768aa6903678007f2e97672bb05;
+</part>
+</book>
