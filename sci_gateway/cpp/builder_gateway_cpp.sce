@@ -52,16 +52,26 @@ elseif getos()=="Darwin" then
     	C_Flags=["-D__USE_DEPRECATED_STACK_FUNCTIONS__ -w -fpermissive -I"+path_builder+" -I"+inc_base_dir+" -Wl,-rpath "+lib_base_dir+" "]
     	Linker_Flag = ["-L"+lib_base_dir+"libSym"+" "+"-L"+lib_base_dir+"libipopt"+" "+"-L"+lib_base_dir+"libClp"+" "+"-L"+lib_base_dir+"libOsiClp"+" "+"-L"+lib_base_dir+"libCoinUtils" + " "+"-L"+lib_base_dir+"libbonmin" ]
 
-else
+else//LINUX
+
     third_dir = path_builder+filesep()+'..'+filesep()+'..'+filesep()+'thirdparty';
     lib_base_dir = third_dir + filesep() + 'linux' + filesep() + 'lib' + filesep() + Version + filesep();
     inc_base_dir = third_dir + filesep() + 'linux' + filesep() + 'include';
     
 
-    C_Flags=["-D__USE_DEPRECATED_STACK_FUNCTIONS__ -w -fpermissive -I"+path_builder+" -I"+inc_base_dir+" -Wl,-rpath="+lib_base_dir+" "+"-std=gnu++11"]
+    //C_Flags=["-w -fpermissive -I"+path_builder+" -I"+inc_base_dir+" -Wl,-rpath="+lib_base_dir+" "+"-std=gnu++11"]
 
-    
-    Linker_Flag = ["-L"+lib_base_dir+"libfun"+" " + "-loctave"+" "+ "-loctinterp"]
+		//C_Flags = ["-D_GLIBCXX_USE_CXX11_ABI=0"+" "+"-Wall -L"+lib_base_dir+" "+ "-Wl,-rpath="+lib_base_dir+" -I"+inc_base_dir+" "+"-I/usr/include/octave-4.4.1/octave/"]
+    C_Flags = ["-I"+inc_base_dir];
+//disp(inc_base_dir)
+    //Linker_Flag = ["-loctave"+" "+"-loctinterp"+" "+"-L/usr/lib/x86_64-linux-gnu/libqrupdate.so.1"+" "+"-L/usr/lib/x86_64-linux-gnu/libamd.so.2"+" "+"-L/usr/lib/x86_64-linux-gnu/libccolamd.so.2"+" "+"-L/usr/lib/x86_64-linux-gnu/libcolamd.so.2"+" "+"-L/usr/lib/x86_64-linux-gnu/libcholmod.so.3"+" "+"-L/usr/lib/x86_64-linux-gnu/libcolamd.so.2"+" "+"-L/usr/lib/x86_64-linux-gnu/libumfpack.so.5"+" "+"-L/usr/lib/x86_64-linux-gnu/libcxsparse.so.3"+" "+"-L/usr/lib/x86_64-linux-gnu/hdf5/serial/libhdf5.so"+" "+"-Wl,-rpath="+lib_base_dir]
+
+//		Linker_Flag = ["-loctave"+" "+"-loctinterp"+" "+"#-L/usr/lib/x86_64-linux-gnu/libfftw3_threads.so.3"+" "+"-Wl,-rpath="+lib_base_dir]
+		Linker_Flag = ["-loctave -loctinterp -L" + lib_base_dir + " -lfun -Wl,-rpath="+lib_base_dir]
+
+    //Linker_Flag = ["-lutil -g -Wall"+" "+"-L"+lib_base_dir+" " + "-loctave"+" "+ "-loctinterp"]
+    disp(C_Flags);
+    disp(Linker_Flag);
     
 end
 
