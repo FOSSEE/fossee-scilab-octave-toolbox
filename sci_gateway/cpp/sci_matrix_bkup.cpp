@@ -1,8 +1,6 @@
-
 extern "C"
 {
 #include<Scierror.h>
-#include<sciprint.h>
 #include<api_scilab.h>
 #include "localization.h"
 #include<fun.h>
@@ -25,16 +23,9 @@ if (nout != 1)
         return 1;
     }
 
-		//int x = fun();
-		//typename (x);
 		double x = fun();
-		//sciprint("%f\n", fun());
-
 		
-		out[0] = scilab_createDouble(env, x);
-
-		//out[0] = scilab_createDoubleMatrix(env, 20, 1, 0);
-    //scilab_getDoubleArray(env, out[0], &x);
+		out[0] = scilab_createDouble( env, x);
 
     return 0;
 }

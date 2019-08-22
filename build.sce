@@ -1,4 +1,7 @@
 
+
+cd /home/rupak/scilab-toolbox/scilab_octave/
+
 if (~isfile("build.sce")) then
     cd ../../
 end
@@ -14,3 +17,5 @@ ulink
 
 exec builder.sce
 exec loader.sce
+
+octave_fun()
