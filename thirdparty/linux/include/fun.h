@@ -1,3 +1,3 @@
 #define fun_h__
-extern "C" int fun (double* answ, int size);
+extern "C" int fun (double* answ, int size, std::string name);
 

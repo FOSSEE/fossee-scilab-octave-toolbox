@@ -1,6 +1,6 @@
 
 
-cd /home/rupak/scilab-toolbox/scilab_octave/
+//cd /home/rupak/scilab-toolbox/scilab_octave/
 
 if (~isfile("build.sce")) then
     cd ../../
