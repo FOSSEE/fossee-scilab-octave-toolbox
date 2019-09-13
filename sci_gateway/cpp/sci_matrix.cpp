@@ -21,12 +21,12 @@ static const char fname[] = "octave_fun";
 int sci_octave_fun(scilabEnv env, int nin, scilabVar* in, int nopt, scilabOpt* opt, int nout, scilabVar* out)
 
 {
-	if (nin < 3)
+	if (nin < 2)
     {
-        Scierror(999, _("%s: Wrong number of input arguments: %d expected.\n"), fname, 3);
+        Scierror(999, _("%s: Wrong number of input arguments: %d expected.\n"), fname, 2);
         return STATUS_ERROR;
     }
-
+/*
 int typ=0;
 	for(int i=1;i<nin+1;i++)
 		{
@@ -36,6 +36,8 @@ int typ=0;
 printf("%s\n","1 - sci_matrix: a matrix of doubles");
 printf("%s\n","10 - sci_strings: a matrix of strings");
 printf("%s\n", "=================================");
+
+*/
 
 /*
 	printf("%d\n", nin);
@@ -47,6 +49,10 @@ printf("%s\n", "=================================");
 	printf("%d\n", col);
 	int i=3;
 */
+
+	octf ins;
+
+	octf *inptr = &ins;
 ///////////////////First Input/////////////////////	
 	double* n = NULL;
 	int row = 0;
@@ -54,12 +60,20 @@ printf("%s\n", "=================================");
   int size = 0;
 	size = scilab_getDim2d(env, in[0], &row, &col);
 	scilab_getDoubleArray(env, in[0], &n);
-	double ar[(int)n[0]];//output size can be defined here
+//	double ar[(int)n[0]];//output size can be defined here
 	
 //	if((int)n[0]!=NULL)
 //	if(in[i]!=NULL)
 //		printf("\nInput %d is not null\n",i);
 
+//double inp[col];
+ins.input1 = new double[col];
+ins.size_input1[2]=col;
+
+		for(int i=0; i<col; i++)
+		{
+			ins.input1[i] = n[i];//.float_value();
+		}
 
 ////////////////Second Input/////////////////////
 	wchar_t* in1 = 0;
@@ -77,26 +91,46 @@ printf("%s\n", "=================================");
 
 			 wcstombs(str, in1, sizeof(str));
 			//printf("%s\n", str);
+			if(str)
+				ins.name1 = str;
 		}
 ////////////////Third Input/////////////////////
-	wchar_t* in4 = 0;
+if(nin<3)
+{
+	ins.name2 = NULL;
+}
+else
+{
 
-	char str2[20];
 
-	if (scilab_isString(env, in[2]) == 0 || nin < 3)
-    {
-      Scierror(999, _("%s: Wrong type for input argument #%d: A String expected.\n"), fname, 3);
-        return STATUS_ERROR;
-    }
-	else
-		{
-  		scilab_getString(env, in[2], &in4);
-			//printf("%S\n", in1);
 
-			wcstombs(str2, in4, sizeof(str2));
-			//printf("%s\n", str);
-		}
+		wchar_t* in4 = 0;
 
+		char str2[20];
+
+			if (scilab_isString(env, in[2]) == 0)
+				{	
+					printf("Here----------------");
+					ins.name2 = NULL;
+					Scierror(999, _("%s: Wrong type for input argument #%d: A String expected.\n"), fname, 3);
+
+					return STATUS_ERROR;
+				}
+			else
+				{
+					scilab_getString(env, in[2], &in4);
+					//printf("%S\n", in1);
+
+					wcstombs(str2, in4, sizeof(str2));
+					//printf("%s\n", str);
+					if(!*str2)
+						ins.name2 = str2;
+					else
+						ins.name2 = NULL;
+				}
+
+
+}
 
 //if (nin != 0)
 //    {
@@ -110,24 +144,28 @@ if (nout != 1)
         return 1;
     }
 
-		double inp[col];
+		
 
-		for(int i=0; i<col; i++)
-		{
-			inp[i] = n[i];//.float_value();
-		}
-
-		fun(ar, inp, col, str, str2);
-		out[0] = scilab_createDoubleMatrix2d(env, n[0], 1, 0);
+		//fun(ar, inp, col, str, str2);
+		int status_fun = fun(inptr);
+	if(status_fun==1)
+	{
+		return 1;
+	}
+	else
+	{		
+		out[0] = scilab_createDoubleMatrix2d(env, ins.size_output1[1], 1, 0);
 
 		double* out1 = NULL;
    	scilab_getDoubleArray(env, out[0], &out1);
 
-		for(int i=0; i<n[0]; i++)
+		for(int i=0; i<ins.size_output1[1]; i++)
 		{
-			out1[i] = ar[i];//.float_value();
+			out1[i] = ins.output1[i];//.float_value();
 		}
-
+		free(ins.output1);
+		free(ins.input1);
+	}
 
     return 0;
 }
