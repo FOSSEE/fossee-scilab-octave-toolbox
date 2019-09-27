@@ -1,7 +1,7 @@
 #include <string>
 #include "wchar.h"
 #include <cstdlib>
-//#include <ctype.h>
+
 extern "C"
 {
 #include<Scierror.h>
@@ -13,160 +13,139 @@ extern "C"
 #include <math.h>
 #include <stdio.h>
 #include "os_string.h"
+#include <stdlib.h>
 
 
 
 static const char fname[] = "octave_fun";
-///////#####call octave_fun([2],"hamming") ########////////////
+///////#####call octave_fun("hamming",[5],"periodic") ########////////////
 int sci_octave_fun(scilabEnv env, int nin, scilabVar* in, int nopt, scilabOpt* opt, int nout, scilabVar* out)
 
 {
-	if (nin < 2)
+//printf("nin: %d\n", nin);
+	if (nin < 1)
     {
-        Scierror(999, _("%s: Wrong number of input arguments: %d expected.\n"), fname, 2);
+        Scierror(999, _("%s: Wrong number of input arguments. Atleast %d expected.\n"), fname, 1);
         return STATUS_ERROR;
     }
-/*
-int typ=0;
-	for(int i=1;i<nin+1;i++)
-		{
-			typ = scilab_getType(env, in[i-1]);
-			printf("Type of input %d is: %d\n",i,typ);
-		}
-printf("%s\n","1 - sci_matrix: a matrix of doubles");
-printf("%s\n","10 - sci_strings: a matrix of strings");
-printf("%s\n", "=================================");
 
-*/
+	FUNCCALL funcall;
+	FUNCCALL *funptr = &funcall;
+	funcall.n_in_arguments = nin;
+	funcall.n_out_user = nout;
 
-/*
-	printf("%d\n", nin);
-	int row = 0;
-  int col = 0;
-  int size = 0;
-	size = scilab_getDim2d(env, in[0], &row, &col);
-	printf("%d\n", row);
-	printf("%d\n", col);
-	int i=3;
-*/
+	FUNCARGS ins[funcall.n_in_arguments*nout];
+	FUNCARGS *argptr = ins;
 
-	octf ins;
-
-	octf *inptr = &ins;
-///////////////////First Input/////////////////////	
+	int i,j;
+	double* d;
+	int size;
+	char str[20];
+	char* c;
 	double* n = NULL;
 	int row = 0;
   int col = 0;
-  int size = 0;
-	size = scilab_getDim2d(env, in[0], &row, &col);
-	scilab_getDoubleArray(env, in[0], &n);
-//	double ar[(int)n[0]];//output size can be defined here
-	
-//	if((int)n[0]!=NULL)
-//	if(in[i]!=NULL)
-//		printf("\nInput %d is not null\n",i);
 
-//double inp[col];
-ins.input1 = new double[col];
-ins.size_input1[2]=col;
+	for(i=0;i<nin;i++)
+	{
+		if(scilab_getType(env, in[i])==1)
+		{	
+			ins[i].type = TYPE_DOUBLE;
+			size = scilab_getDim2d(env, in[i], &row, &col);
+			ins[i].n_in_rows = row;
+			ins[i].n_in_cols = col;
+			scilab_getDoubleArray(env, in[i], &n);
 
-		for(int i=0; i<col; i++)
-		{
-			ins.input1[i] = n[i];//.float_value();
+			ins[i].in_data = malloc(sizeof(double)*size);
+			d = (double *)ins[i].in_data;
+
+			for(j=0;j<size;j++)
+			{
+				d[j] = n[j];
+				//printf("%f\n",d[j]);
+			}
 		}
-
-////////////////Second Input/////////////////////
-	wchar_t* in1 = 0;
-
-	char str[20];
-	if (scilab_isString(env, in[1]) == 0)
-    {
-      Scierror(999, _("%s: Wrong type for input argument #%d: A String expected.\n"), fname, 2);
-        return STATUS_ERROR;
-    }
-	else
+		else if(scilab_getType(env, in[i])==10)
 		{
-			scilab_getString(env, in[1], &in1);
+			wchar_t* in1 = 0;
+
+			scilab_getString(env, in[i], &in1);
 			//printf("%S\n", in1);
 
-			 wcstombs(str, in1, sizeof(str));
+			wcstombs(str, in1, sizeof(str));
 			//printf("%s\n", str);
 			if(str)
-				ins.name1 = str;
+			{
+				//printf("lenght of string input: %d\n", strlen(str));
+				ins[i].type = TYPE_STRING;
+				ins[i].n_in_rows = 1;
+				ins[i].n_in_cols = strlen(str);
+				size = (ins[i].n_in_rows)*(ins[i].n_in_cols);
+				ins[i].in_data = malloc(sizeof(char)*size+1);
+				c = (char *)ins[i].in_data;
+				int ci;
+
+				strcpy(c,str);	
+				ins[i].n_in_cols = strlen(c);
+				//printf("in scilab strin is: %s\n", c);
+
+			}
 		}
-////////////////Third Input/////////////////////
-if(nin<3)
-{
-	ins.name2 = NULL;
-}
-else
-{
+	}
+
+			int status_fun = fun(argptr, funptr);
+		//printf("in scilab status_fun is: %d\n", status_fun);
+			//printf("in scilab funcall.n_out_arguments is: %d\n", funcall.n_out_arguments);
+			//printf("in scilab funcall.n_out_user is: %d\n", funcall.n_out_user);
+//printf("in scilab ins[0].n_out_rows is: %d\n", ins[0].n_out_rows);
+//printf("in scilab ins[0].n_out_cols is: %d\n", ins[0].n_out_cols);
 
 
-
-		wchar_t* in4 = 0;
-
-		char str2[20];
-
-			if (scilab_isString(env, in[2]) == 0)
-				{	
-					printf("Here----------------");
-					ins.name2 = NULL;
-					Scierror(999, _("%s: Wrong type for input argument #%d: A String expected.\n"), fname, 3);
-
-					return STATUS_ERROR;
-				}
-			else
-				{
-					scilab_getString(env, in[2], &in4);
-					//printf("%S\n", in1);
-
-					wcstombs(str2, in4, sizeof(str2));
-					//printf("%s\n", str);
-					if(!*str2)
-						ins.name2 = str2;
-					else
-						ins.name2 = NULL;
-				}
-
-
-}
-
-//if (nin != 0)
-//    {
-//        Scierror(77, _("%s: Wrong number of input argument(s): %d expected.\n"), fname, 1);
-//        return 1;
-//    }
-
-if (nout != 1)
-    {
-        Scierror(77, _("%s: Wrong number of output argument(s): %d expected.\n"), fname, 1);
-        return 1;
-    }
-
-		
-
-		//fun(ar, inp, col, str, str2);
-		int status_fun = fun(inptr);
+//printf("in scilab ouput args are: %d\n", funcall.n_out_arguments);
 	if(status_fun==1)
 	{
 		return 1;
 	}
-	else
-	{		
-		out[0] = scilab_createDoubleMatrix2d(env, ins.size_output1[1], 1, 0);
+	else if(funcall.n_out_user <= funcall.n_out_arguments)
+	{	
+		for(i=0;i<nout;i++)
+		{	
+			out[i] = scilab_createDoubleMatrix2d(env, ins[i].n_out_rows, ins[i].n_out_cols, 0);
 
-		double* out1 = NULL;
-   	scilab_getDoubleArray(env, out[0], &out1);
-
-		for(int i=0; i<ins.size_output1[1]; i++)
-		{
-			out1[i] = ins.output1[i];//.float_value();
+			double* out1 = NULL;
+		 	scilab_getDoubleArray(env, out[i], &out1);
+			int len = ins[i].n_out_rows*ins[i].n_out_cols;
+			double* dd = (double *)ins[i].out_data;
+			//printf("output length is: %d\n", len);
+			for(j=0; j<len; j++)
+				{
+					out1[j] = dd[j];//.float_value();
+				}
 		}
-		free(ins.output1);
-		free(ins.input1);
 	}
+	else
+	{
+			Scierror(77, _("%s: Wrong number of output argument(s): This function can return a maximum of %d output(s).\n"), fname, funcall.n_out_arguments);
+			return 1;
+		}
 
-    return 0;
+
+
+
+	for(i=0;i<nout;i++)
+	{
+		//printf("%ld : ",&ins[i].in_data);
+	//	printf("%f\n",(*(double *)ins[i].in_data));
+	
+		free(ins[i].out_data);	
+	}
+	for(i=0;i<nin;i++)
+	{
+		//printf("%ld : ",&ins[i].in_data);
+	//	printf("%f\n",(*(double *)ins[i].in_data));
+	
+		free(ins[i].in_data);	
+	}
+  return 0;
 }
 }

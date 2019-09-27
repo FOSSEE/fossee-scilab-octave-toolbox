@@ -3,15 +3,32 @@
 
 extern "C"
 {
-typedef struct octave_fun
-{
-	char* name1 = "";
-	char* name2 = "";
-	double* input1;
-	int size_input1[2];
-	double* output1;
-	int size_output1[2];
-}octf;
 
-int fun(octf *inp);
+	typedef enum
+	{
+		TYPE_DOUBLE,
+		TYPE_STRING,
+	}FUNCTYPE;
+
+	typedef struct
+	{
+		FUNCTYPE type;
+		int n_in_rows;
+		int n_in_cols;
+		int n_out_rows;
+		int n_out_cols;
+		void* in_data;
+		void* out_data;
+	}FUNCARGS;
+	
+	typedef struct {
+	int n_in_arguments; // number of input arguments
+	int n_out_arguments; // number of output arguments
+	int n_out_user; // number of output arguments
+	//char *name; // Name
+	//char *package; //Name of octave package to be loaded
+	FUNCARGS *argument;
+} FUNCCALL;
+
+	int fun(FUNCARGS *arr, FUNCCALL *call);
 }
