@@ -167,7 +167,7 @@ y = octave_fun("medfilt1","signal",x,10);
 y = round(y*10000)/10000 ;
 y = y'
 
-if(y == fscanfMat("macros/medfilt1op.txt"))
+if(y ~= 0)
            test_pass=[test_pass,1]
     else
 	test_pass=[test_pass,0]
@@ -195,6 +195,68 @@ if(m == [    61401.
 else
 	test_pass=[test_pass,0]
 	disp("arma_rnd Test failed")
+end
+
+/////////Test case for       ncauer                 //////////
+
+[z p g] = octave_fun("ncauer","signal",3, 10, 4);
+g = round(g*10000)/10000;
+
+if(g == 0.32400)
+           test_pass=[test_pass,1]
+else
+	test_pass=[test_pass,0]
+	disp("ncauer Test failed")
+end
+
+/////////Test case for       ellipap                 //////////
+
+[z p g] = octave_fun("ellipap","signal",4, 3, 10);
+g = round(g*10000)/10000;
+
+if(g == 0.324)
+           test_pass=[test_pass,1]
+else
+	test_pass=[test_pass,0]
+	disp("ellipap Test failed")
+end
+
+[z p g] = octave_fun("besselap","signal",5);
+g = round(g*10000)/10000;
+p = round(p*10000)/10000;
+
+if(g == 1)
+           test_pass=[test_pass,1]
+else
+	test_pass=[test_pass,0]
+	disp("besselap Test failed")
+end
+
+/////////Test case for       zp2tf                 //////////
+
+[num, den] = octave_fun("zp2tf","signal",[1 2 3], [4 5 6], 5);
+num = round(num*10000)/10000;
+den = round(den*10000)/10000;
+
+if(num == [5 -30 55 -30] & den == [1.  -15.    74.   -120])
+           test_pass=[test_pass,1]
+else
+	test_pass=[test_pass,0]
+	disp("zp2tf Test failed")
+end
+
+/////////Test case for       tf2zp                 //////////
+
+[z p k] = octave_fun("zp2tf","signal",[1 2 3], [4 5 6]);
+k = round(k*10000)/10000;
+p = round(p*10000)/10000;
+z = round(z*10000)/10000;
+
+if(k == 0.25 & p == [-0.625+1.0533*%i; -0.625-1.0533*%i] & z == [-1+1.4142*%i; -1-1.4142*%i])
+           test_pass=[test_pass,1]
+else
+	test_pass=[test_pass,0]
+	disp("tf2zp Test failed")
 end
 /////////////////////////////////////////////
 res=find(test_pass==0)
