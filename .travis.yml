@@ -2,7 +2,10 @@ language: scilab
 dist: bionic
 before_install:
  - sudo apt-get update
- - sudo apt-get install scilab
+ - wget https://launchpad.net/ubuntu/+archive/primary/+sourcefiles/scilab/6.0.1-1ubuntu1/scilab_6.0.1-1ubuntu1.debian.tar.xz
+ - tar -xf scilab_6.0.1-1ubuntu1.debian.tar.xz
+ - cd scilab_6.0.1-1ubuntu1.debian
+ - bash scilab.install
  - sudo apt-get install octave
  - sudo apt-get install build-essential
  - sudo apt-get install liboctave-dev
