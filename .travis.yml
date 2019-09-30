@@ -4,8 +4,7 @@ before_install:
  - sudo apt-get update
  - wget https://launchpad.net/ubuntu/+archive/primary/+sourcefiles/scilab/6.0.1-1ubuntu1/scilab_6.0.1-1ubuntu1.debian.tar.xz
  - tar -xf scilab_6.0.1-1ubuntu1.debian.tar.xz
- - cd scilab_6.0.1-1ubuntu1.debian
- - bash scilab.install
+ - bash scilab_6.0.1-1ubuntu1.debian/scilab.install
  - sudo apt-get install octave
  - sudo apt-get install build-essential
  - sudo apt-get install liboctave-dev
