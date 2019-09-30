@@ -1,8 +1,9 @@
+
+exec build.sce
 test_pass=[]
 res=[]
 
 test1=0
-exec ../build.sce
 /////////Test case for       2) arburg                  //////////
 
 a = octave_fun("arburg","signal", [1,2,3,4,5],2);
