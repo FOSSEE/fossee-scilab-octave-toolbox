@@ -1,0 +1,11 @@
+language: scilab
+
+before_install:
+ - sudo apt-get install scilab
+ - sudo apt-get install octave
+ - sudo apt-get install build-essential
+ - sudo apt-get install liboctave-dev
+
+script:
+ - octave-cli tests/oct-setup.m
+ - scilab -nw -f tests/test.sce
