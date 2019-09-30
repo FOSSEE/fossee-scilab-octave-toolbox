@@ -104,6 +104,7 @@ int sci_octave_fun(scilabEnv env, int nin, scilabVar* in, int nopt, scilabOpt* o
 //printf("in scilab ouput args are: %d\n", funcall.n_out_arguments);
 	if(status_fun==1)
 	{
+		Scierror(999, "\nOctave unable to process!\nCorrect usage:\n octave_fun(\"octave_function\",input1,input2,...)\n octave_fun(\"octave_function\",input1,input2,...,optional_input1,optional_input2,...)\n octave_fun(\"octave_function\",\"octave_package\",input1,input2,...)\n octave_fun(\"octave_function\",\"octave_package\",input1,input2,...,optional_input1,optional_input2,...)\n");
 		return 1;
 	}
 	else if(funcall.n_out_user <= funcall.n_out_arguments)
