@@ -1,6 +1,7 @@
 language: scilab
 dist: bionic
 before_install:
+ - sudo apt-get update
  - sudo apt-get install scilab
  - sudo apt-get install octave
  - sudo apt-get install build-essential
