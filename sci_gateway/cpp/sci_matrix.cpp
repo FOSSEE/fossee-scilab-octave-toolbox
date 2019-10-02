@@ -18,7 +18,6 @@ extern "C"
 
 
 static const char fname[] = "octave_fun";
-///////#####call octave_fun("hamming",[5],"periodic") ########////////////
 int sci_octave_fun(scilabEnv env, int nin, scilabVar* in, int nopt, scilabOpt* opt, int nout, scilabVar* out)
 
 {
@@ -59,11 +58,18 @@ int sci_octave_fun(scilabEnv env, int nin, scilabVar* in, int nopt, scilabOpt* o
 			ins[i].in_data = malloc(sizeof(double)*size);
 			d = (double *)ins[i].in_data;
 
-			for(j=0;j<size;j++)
+////This code snippet is to flatten matrix row wise and then store it
+			int p,q,k = 0;
+			for(p=0;p<row;p++)
 			{
-				d[j] = n[j];
-				//printf("%f\n",d[j]);
+				for(q=0;q<col;q++)
+				{
+					d[k] = n[p + q*row];
+					k++;
+					//printf("%f\n",d[j]);
+				}
 			}
+/////////////////////////////////////////
 		}
 		else if(scilab_getType(env, in[i])==10)
 		{
@@ -126,7 +132,7 @@ int sci_octave_fun(scilabEnv env, int nin, scilabVar* in, int nopt, scilabOpt* o
 	}
 	else
 	{
-			Scierror(77, _("%s: Wrong number of output argument(s): This function can return a maximum of %d output(s).\n"), fname, funcall.n_out_arguments);
+			Scierror(77, _("%s: Wrong number of output arguments: This function can return a maximum of %d output(s).\n"), fname, funcall.n_out_arguments);
 			return 1;
 		}
 

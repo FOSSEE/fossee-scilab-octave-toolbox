@@ -1,4 +1,11 @@
 clc
+disp("Checking Matrix inversion")
+A=[1 2 3;4 5 6;7 8 0]
+y = octave_fun("inv",A)
+y*A
+pause
+
+
 disp("Testing octaves built in function hamming")
 y = octave_fun("hamming",5)
 pause

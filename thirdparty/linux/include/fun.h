@@ -25,7 +25,7 @@ extern "C"
 	int n_in_arguments; // number of input arguments
 	int n_out_arguments; // number of output arguments
 	int n_out_user; // number of output arguments
-	//char *name; // Name
+	char *err; // Name
 	//char *package; //Name of octave package to be loaded
 	FUNCARGS *argument;
 } FUNCCALL;
