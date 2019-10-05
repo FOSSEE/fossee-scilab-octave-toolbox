@@ -17,8 +17,12 @@ extern "C"
 		int n_in_cols;
 		int n_out_rows;
 		int n_out_cols;
-		void* in_data;
-		void* out_data;
+		int is_in_cmplx;
+		int is_out_cmplx;
+		void* in_data_real;
+		void* in_data_img;
+		void* out_data_real;
+		void* out_data_img;
 	}FUNCARGS;
 	
 	typedef struct {

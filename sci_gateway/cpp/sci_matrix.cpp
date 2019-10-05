@@ -38,41 +38,76 @@ int sci_octave_fun(scilabEnv env, int nin, scilabVar* in, int nopt, scilabOpt* o
 
 	int i,j;
 	double* d;
+	double* rd;
+	double* cd;
 	int size;
 	char str[20];
 	char* c;
 	double* n = NULL;
 	int row = 0;
   int col = 0;
+	double* in_real;
+	double* in_img;
 
 	for(i=0;i<nin;i++)
 	{
 		if(scilab_getType(env, in[i])==1)
 		{	
 			ins[i].type = TYPE_DOUBLE;
-			size = scilab_getDim2d(env, in[i], &row, &col);
-			ins[i].n_in_rows = row;
-			ins[i].n_in_cols = col;
-			scilab_getDoubleArray(env, in[i], &n);
-
-			ins[i].in_data = malloc(sizeof(double)*size);
-			d = (double *)ins[i].in_data;
-
-////This code snippet is to flatten matrix row wise and then store it
-			int p,q,k = 0;
-			for(p=0;p<row;p++)
+			if(scilab_isComplex(env, in[i])==1)
 			{
-				for(q=0;q<col;q++)
+				ins[i].is_in_cmplx=1;
+				size = scilab_getDim2d(env, in[i], &row, &col);
+				ins[i].n_in_rows = row;
+				ins[i].n_in_cols = col;
+				scilab_getDoubleComplexArray(env, in[0],&in_real, &in_img);
+
+				ins[i].in_data_real = malloc(sizeof(double)*size);
+				ins[i].in_data_img = malloc(sizeof(double)*size);
+				rd = (double *)ins[i].in_data_real;
+				cd = (double *)ins[i].in_data_img;
+
+	////This code snippet is to flatten matrix row wise and then store it
+				int p,q,k = 0;
+				for(p=0;p<row;p++)
 				{
-					d[k] = n[p + q*row];
-					k++;
-					//printf("%f\n",d[j]);
+					for(q=0;q<col;q++)
+					{
+						rd[k] = in_real[p + q*row];
+						cd[k] = in_img[p + q*row];
+						k++;
+						//printf("%f\n",d[j]);
+					}
+				}
+			}
+			else
+			{
+				ins[i].is_in_cmplx=0;
+				size = scilab_getDim2d(env, in[i], &row, &col);
+				ins[i].n_in_rows = row;
+				ins[i].n_in_cols = col;
+				scilab_getDoubleArray(env, in[i], &n);
+
+				ins[i].in_data_real = malloc(sizeof(double)*size);
+				d = (double *)ins[i].in_data_real;
+
+	////This code snippet is to flatten matrix row wise and then store it
+				int p,q,k = 0;
+				for(p=0;p<row;p++)
+				{
+					for(q=0;q<col;q++)
+					{
+						d[k] = n[p + q*row];
+						k++;
+						//printf("%f\n",d[j]);
+					}
 				}
 			}
 /////////////////////////////////////////
 		}
 		else if(scilab_getType(env, in[i])==10)
 		{
+			ins[i].is_in_cmplx=0;
 			wchar_t* in1 = 0;
 
 			scilab_getString(env, in[i], &in1);
@@ -87,8 +122,8 @@ int sci_octave_fun(scilabEnv env, int nin, scilabVar* in, int nopt, scilabOpt* o
 				ins[i].n_in_rows = 1;
 				ins[i].n_in_cols = strlen(str);
 				size = (ins[i].n_in_rows)*(ins[i].n_in_cols);
-				ins[i].in_data = malloc(sizeof(char)*size+1);
-				c = (char *)ins[i].in_data;
+				ins[i].in_data_real = malloc(sizeof(char)*size+1);
+				c = (char *)ins[i].in_data_real;
 				int ci;
 
 				strcpy(c,str);	
@@ -117,17 +152,40 @@ int sci_octave_fun(scilabEnv env, int nin, scilabVar* in, int nopt, scilabOpt* o
 	{	
 		for(i=0;i<nout;i++)
 		{	
-			out[i] = scilab_createDoubleMatrix2d(env, ins[i].n_out_rows, ins[i].n_out_cols, 0);
+			
+		if(ins[i].is_out_cmplx==1)
+		{
+			out[i] = scilab_createDoubleMatrix2d(env, ins[i].n_out_rows, ins[i].n_out_cols, 1);
+			double* out_real = NULL;
+			double* out_img = NULL;
+			scilab_getDoubleComplexArray(env, out[i],&out_real, &out_img);
+			int len = ins[i].n_out_rows*ins[i].n_out_cols;
+			double* ord = (double *)ins[i].out_data_real;
+			double* ocd = (double *)ins[i].out_data_img;
+			//printf("output length is: %d\n", len);
+			for(j=0; j<len; j++)
+				{
+					out_real[j] = ord[j];
+				}
 
+			for(j=0; j<len; j++)
+				{
+					out_img[j] = ocd[j];
+				}
+		}
+		else
+		{
+			out[i] = scilab_createDoubleMatrix2d(env, ins[i].n_out_rows, ins[i].n_out_cols, 0);
 			double* out1 = NULL;
 		 	scilab_getDoubleArray(env, out[i], &out1);
 			int len = ins[i].n_out_rows*ins[i].n_out_cols;
-			double* dd = (double *)ins[i].out_data;
+			double* dd = (double *)ins[i].out_data_real;
 			//printf("output length is: %d\n", len);
 			for(j=0; j<len; j++)
 				{
 					out1[j] = dd[j];//.float_value();
 				}
+			}
 		}
 	}
 	else
@@ -141,17 +199,18 @@ int sci_octave_fun(scilabEnv env, int nin, scilabVar* in, int nopt, scilabOpt* o
 
 	for(i=0;i<nout;i++)
 	{
-		//printf("%ld : ",&ins[i].in_data);
-	//	printf("%f\n",(*(double *)ins[i].in_data));
-	
-		free(ins[i].out_data);	
+		free(ins[i].out_data_real);
+
+		if(ins[i].is_out_cmplx==1)
+			free(ins[i].out_data_img);
 	}
+
 	for(i=0;i<nin;i++)
 	{
-		//printf("%ld : ",&ins[i].in_data);
-	//	printf("%f\n",(*(double *)ins[i].in_data));
-	
-		free(ins[i].in_data);	
+		free(ins[i].in_data_real);
+
+		if(ins[i].is_in_cmplx==1)
+			free(ins[i].in_data_img);
 	}
   return 0;
 }
