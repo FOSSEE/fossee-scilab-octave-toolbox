@@ -12,7 +12,7 @@
 mode(-1)
 lines(0)
 
-toolbox_title = "scilab_toolbox";
+toolbox_title = "scilab_octave";
 
 Build_64Bits = %t;
 
@@ -26,7 +26,7 @@ Function_Names = [
 
 //Name of all the files to be compiled
 Files = [
-        "sci_matrix.cpp"    
+        "sci_octave.cpp"    
     ]
 
 

@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+ *
+ * This help file was generated from octave_fun.sci using help_from_sci().
+ *
+ -->
+
+<refentry version="5.0-subset Scilab" xml:id="octave_fun" xml:lang="en"
+          xmlns="http://docbook.org/ns/docbook"
+          xmlns:xlink="http://www.w3.org/1999/xlink"
+          xmlns:svg="http://www.w3.org/2000/svg"
+          xmlns:ns3="http://www.w3.org/1999/xhtml"
+          xmlns:mml="http://www.w3.org/1998/Math/MathML"
+          xmlns:scilab="http://www.scilab.org"
+          xmlns:db="http://docbook.org/ns/docbook">
+
+  <refnamediv>
+    <refname>octave_fun</refname>
+    <refpurpose>Calls an octave function with given inputs and returns the expected output</refpurpose>
+  </refnamediv>
+
+
+<refsynopsisdiv>
+   <title>Syntax</title>
+   <synopsis>
+   [y1, y2, ...] = octave_fun("octave_function",input1,input2,...)
+   [y1, y2, ...] = octave_fun("octave_function",input1,input2,...,optional_input1,optional_input2,...)
+   [y1, y2, ...] = octave_fun("octave_function","octave_package",input1,input2,...)
+   [y1, y2, ...] = octave_fun("octave_function","octave_package",input1,input2,...,optional_input1,optional_input2,...)
+   
+   </synopsis>
+</refsynopsisdiv>
+
+<refsection>
+   <title>Parameters</title>
+   <variablelist>
+        <varlistentry>
+            <term>y :</term>
+            <listitem><para> ouput as returned by octave. It can be a vector or matrix of doubles</para></listitem>
+        </varlistentry>
+        <varlistentry>
+            <term>octave_function :</term>
+            <listitem><para> name of the function in octave that has to be called. It has to be a string in double quotes</para></listitem>
+        </varlistentry>
+        <varlistentry>
+            <term>input :</term>
+            <listitem><para> input as expected by the octave function. It can be a vector or matrix of doubles</para></listitem>
+        </varlistentry>
+        <varlistentry>
+            <term>optional_input :</term>
+            <listitem><para> an optional argument that the given octave function can accept. It has to be a string in double quotes</para></listitem>
+        </varlistentry>
+        <varlistentry>
+            <term>octave_package :</term>
+            <listitem><para> name of the package in octave that has to be loaded as required by the octave function. It has to be a string in double quotes</para></listitem>
+        </varlistentry>
+   </variablelist>
+</refsection>
+
+<refsection>
+   <title>Description</title>
+   <para>
+This function accepts an octave function name with the relevant inputs and returns the output as generated. It requires Octave to be installed along with necessary packages.
+   </para>
+   <para>
+<latex>
+\begin{eqnarray}
+&amp;\mbox{min}_{x}
+&amp; C^T⋅x \\
+&amp; \text{subject to}&amp; A⋅x = b \\
+&amp; &amp; G⋅x \preceq_K h \\
+&amp; &amp; x_i \in \{0,1\}, i \in \!\, bool_vars\
+&amp; &amp; x_j \in \!\, \mathbb{Z}, i \in \!\, int_vars\\
+\end{eqnarray}
+</latex>
+   </para>
+   <para>
+</para>
+</refsection>
+
+<refsection>
+   <title>Examples</title>
+   <programlisting role="example"><![CDATA[
+// Finding the inverse of a matrix using octave
+A=[1 2 3;4 5 6;7 8 0]
+y = octave_fun("inv",A)
+y*A
+
+   ]]></programlisting>
+</refsection>
+
+<refsection>
+   <title>Examples</title>
+   <programlisting role="example"><![CDATA[
+
+// Finding the roots of a polynomial using its coefficients as inputs, using octave
+p = [1 2 3];
+y = octave_fun("roots",p)
+
+   ]]></programlisting>
+</refsection>
+
+<refsection>
+   <title>Examples</title>
+   <programlisting role="example"><![CDATA[
+
+// Generating filter coefficients of a Hamming window of length M, using octave.
+M = 5
+y = octave_fun("hamming",M)
+
+   ]]></programlisting>
+</refsection>
+
+<refsection>
+   <title>Examples</title>
+   <programlisting role="example"><![CDATA[
+
+// Generating filter coefficients of a Hamming window of length M with optional arguments, using octave.
+M = 5
+y = octave_fun("hamming",M,"periodic")
+
+
+   ]]></programlisting>
+</refsection>
+
+<refsection>
+   <title>Examples</title>
+   <programlisting role="example"><![CDATA[
+
+// Generating an elliptic or Cauer filter with given passband ripple and stopband attenuation, using octave and its "signal" package. See help in octave for more information about "ellip" function
+[b, a]=octave_fun("ellip","signal",5,1,90,[0.1 0.2])
+
+   ]]></programlisting>
+</refsection>
+
+<refsection>
+   <title>Authors</title>
+   <simplelist type="vert">
+   <member>Rupak Rokade</member>
+   </simplelist>
+</refsection>
+</refentry>

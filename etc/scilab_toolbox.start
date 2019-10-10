@@ -5,8 +5,8 @@
 
 function scilab_toolboxlib = startModule()
 
-    TOOLBOX_NAME  = "scilab_toolbox";
-    TOOLBOX_TITLE = "scilab_toolbox";
+    TOOLBOX_NAME  = "scilab_octave";
+    TOOLBOX_TITLE = "scilab_octave";
 
   mprintf("Start " + TOOLBOX_TITLE + "\n");
 

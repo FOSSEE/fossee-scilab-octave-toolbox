@@ -22,9 +22,9 @@ int sci_octave_fun(scilabEnv env, int nin, scilabVar* in, int nopt, scilabOpt* o
 
 {
 //printf("nin: %d\n", nin);
-	if (nin < 1)
+	if (nin < 2)
     {
-        Scierror(999, _("%s: Wrong number of input arguments. Atleast %d expected.\n"), fname, 1);
+        Scierror(999, _("%s: Wrong number of input arguments. Atleast %d expected.\n"), fname, 2);
         return STATUS_ERROR;
     }
 

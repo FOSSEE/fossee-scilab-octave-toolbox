@@ -2,19 +2,21 @@
 
 //cd /home/rupak/scilab-toolbox/scilab_octave/
 
-if (~isfile("build.sce")) then
-    cd ../../
-end
-pwd
+//if (~isfile("build.sce")) then
+//    cd ../../
+//end
+//pwd
 
 try exec unloader.sce
 end
 
 exec cleaner.sce
 clear
-ulink
 
+try ulink
+end
 
+help_from_sci("macros","help/en_US")
 exec builder.sce
 exec loader.sce
 

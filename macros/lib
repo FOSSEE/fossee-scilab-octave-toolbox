@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<scilablib name="scilab_toolboxlib">
-  <macro name="scilab_error" file="scilab_error.bin" md5="1d8333160de4df7b257ac6ce6a660fb4"/>
-  <macro name="scilab_sum" file="scilab_sum.bin" md5="1ca685054fd3e9159204826fc4f3b06a"/>
+<scilablib name="scilab_octavelib">
+  <macro name="octave_fun" file="octave_fun.bin" md5="1648c1471394ed99be43b78ba3ee3576"/>
 </scilablib>

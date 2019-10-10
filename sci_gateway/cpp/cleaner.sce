@@ -10,20 +10,20 @@ if fileinfo('loader.sce') <> [] then
   mdelete('loader.sce');
 end
 // ------------------------------------------------------
-if fileinfo('libscilab_toolbox.so') <> [] then
-  mdelete('libscilab_toolbox.so');
+if fileinfo('libscilab_octave.so') <> [] then
+  mdelete('libscilab_octave.so');
 end
 // ------------------------------------------------------
-if fileinfo('libscilab_toolbox.cpp') <> [] then
-  mdelete('libscilab_toolbox.cpp');
+if fileinfo('libscilab_octave.cpp') <> [] then
+  mdelete('libscilab_octave.cpp');
 end
 // ------------------------------------------------------
-if fileinfo('libscilab_toolbox.hxx') <> [] then
-  mdelete('libscilab_toolbox.hxx');
+if fileinfo('libscilab_octave.hxx') <> [] then
+  mdelete('libscilab_octave.hxx');
 end
 // ------------------------------------------------------
-if fileinfo('libscilab_toolbox.h') <> [] then
-  mdelete('libscilab_toolbox.h');
+if fileinfo('libscilab_octave.h') <> [] then
+  mdelete('libscilab_octave.h');
 end
 // ------------------------------------------------------
 chdir(curdir);
