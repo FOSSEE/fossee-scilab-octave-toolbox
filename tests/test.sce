@@ -1,5 +1,5 @@
 
-exec build.sce
+//exec build.sce
 test_pass=[]
 res=[]
 
@@ -251,15 +251,134 @@ else
 	test_pass=[test_pass,0]
 	disp("tf2zp Test failed")
 end
+
+/////////Test case for       buttap                 //////////
+
+n = 5 ;
+[z p g] = octave_fun("buttap", n);
+g = round(g*10000)/10000;
+
+if(g == 1)
+           test_pass=[test_pass,1]
+else
+	test_pass=[test_pass,0]
+	disp("buttap Test failed")
+end
+
+/////////Test case for       cheb1ap                 //////////
+
+[z p g] = octave_fun("cheb1ap", 10, 3);
+g = round(g*10000)/10000;
+
+if(g == 0.002)
+           test_pass=[test_pass,1]
+else
+	test_pass=[test_pass,0]
+	disp("cheb1ap Test failed")
+end
+
+/////////Test case for       sftrans                 //////////
+//fc = 100;
+//[z p k] = octave_fun("tf2zp","signal",[1 2 3], [4 5 6])
+//[Sz, Sp, Sg] = octave_fun("sftrans",z, p, k, 2*%pi*fc, %f);
+//Sz = round(Sz*10000)/10000;
+
+
+//if(Sz ~= 0)
+//           test_pass=[test_pass,1]
+//else
+//	test_pass=[test_pass,0]
+//	disp("sftrans Test failed")
+//end
+
+/////////Test case for       bilinear                 //////////
+
+[b a] = octave_fun("bilinear","signal",[1 2 3], [4 5 6], 1, 1);
+b = round(b*10000)/10000;
+a = round(a*10000)/10000;
+
+
+if(b == [0 -0.1667 -0.3333 2.5] & a == [1 7.3333 17.6667 14])
+           test_pass=[test_pass,1]
+else
+	test_pass=[test_pass,0]
+	disp("bilinear Test failed")
+end
+/////////Test case for       buttord                 //////////
+[n, Wn] = octave_fun("buttord",40/500, 150/500, 3, 60);
+Wn = round(Wn*10000)/10000;
+
+if(n == 5 & Wn == 0.08)
+           test_pass=[test_pass,1]
+else
+	test_pass=[test_pass,0]
+	disp("buttord Test failed")
+end
+
+/////////Test case for       butter                 //////////
+
+[b a] = octave_fun("butter","signal",4,0.3,"high")
+b = round(b*10000)/10000;
+a = round(a*10000)/10000;
+
+if(b == [0.2754 -1.1017 1.6525 -1.1017 0.2754] & a == [1 -1.5704 1.2756 -0.4844 0.0762])
+           test_pass=[test_pass,1]
+else
+	test_pass=[test_pass,0]
+	disp("butter Test failed")
+end
+
+/////////Test case for       cheb1ord                 //////////
+
+[n, Wn]=octave_fun("cheb1ord","signal",[0.25 0.3],[0.24 0.31],3,10)
+Wn = round(Wn*10000)/10000;
+
+if(n == 3 & Wn == [0.25 0.3])
+           test_pass=[test_pass,1]
+else
+	test_pass=[test_pass,0]
+	disp("cheb1ord Test failed")
+end
+
+/////////Test case for       cheby1                 //////////
+
+[z, p]=octave_fun("cheby1","signal",2,6,0.7,"high")// Note it shld return k as well
+z = round(z*10000)/10000;
+p = round(p*10000)/10000;
+k = round(k*10000)/10000;
+
+if(z == [1 1] & p == [-0.6292+0.5537*%i  -0.6292-0.5537*%i] & k == 0.0556)
+           test_pass=[test_pass,1]
+else
+	test_pass=[test_pass,0]
+	disp("cheby1 Test failed")
+end
+
+/////////Test case for       cheb2ord                 //////////
+
+Wp = 40/500;
+Ws = 150/500;
+Rp = 3;
+Rs = 60;
+[n,Ws] = octave_fun("cheb2ord",Wp,Ws,Rp,Rs)
+Ws = round(Ws*10000)/10000;
+
+if(n == 4 & Ws == 0.3)
+           test_pass=[test_pass,1]
+else
+	test_pass=[test_pass,0]
+	disp("cheb2ord Test failed")
+end
+
 /////////////////////////////////////////////
 res=find(test_pass==0)
 
 if(res~=[])
     disp("One or more tests failed in test1")
 		disp(length(test_pass),"Total functions tested:")
-		exit(1)
+		//exit(1)
 else
 disp(length(test_pass),"Total functions tested:")
 disp("ALL OK")
-exit()
+//exit()
 end

@@ -155,6 +155,7 @@ int sci_octave_fun(scilabEnv env, int nin, scilabVar* in, int nopt, scilabOpt* o
 			
 		if(ins[i].is_out_cmplx==1)
 		{
+			//printf("output %d is complex\n", i);
 			out[i] = scilab_createDoubleMatrix2d(env, ins[i].n_out_rows, ins[i].n_out_cols, 1);
 			double* out_real = NULL;
 			double* out_img = NULL;
@@ -175,6 +176,7 @@ int sci_octave_fun(scilabEnv env, int nin, scilabVar* in, int nopt, scilabOpt* o
 		}
 		else
 		{
+			//printf("output %d is NOT complex\n", i);
 			out[i] = scilab_createDoubleMatrix2d(env, ins[i].n_out_rows, ins[i].n_out_cols, 0);
 			double* out1 = NULL;
 		 	scilab_getDoubleArray(env, out[i], &out1);
