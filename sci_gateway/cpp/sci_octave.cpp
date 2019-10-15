@@ -38,8 +38,8 @@ int sci_octave_fun(scilabEnv env, int nin, scilabVar* in, int nopt, scilabOpt* o
 
 	int i,j;
 	double* d;
-	double* rd;
-	double* cd;
+	double* rd = NULL;;
+	double* cd = NULL;;
 	int size;
 	char str[20];
 	char* c;
@@ -56,11 +56,12 @@ int sci_octave_fun(scilabEnv env, int nin, scilabVar* in, int nopt, scilabOpt* o
 			ins[i].type = TYPE_DOUBLE;
 			if(scilab_isComplex(env, in[i])==1)
 			{
+				//printf("input %d is complex \n", i);
 				ins[i].is_in_cmplx=1;
 				size = scilab_getDim2d(env, in[i], &row, &col);
 				ins[i].n_in_rows = row;
 				ins[i].n_in_cols = col;
-				scilab_getDoubleComplexArray(env, in[0],&in_real, &in_img);
+				scilab_getDoubleComplexArray(env, in[i],&in_real, &in_img);
 
 				ins[i].in_data_real = malloc(sizeof(double)*size);
 				ins[i].in_data_img = malloc(sizeof(double)*size);
@@ -76,12 +77,14 @@ int sci_octave_fun(scilabEnv env, int nin, scilabVar* in, int nopt, scilabOpt* o
 						rd[k] = in_real[p + q*row];
 						cd[k] = in_img[p + q*row];
 						k++;
-						//printf("%f\n",d[j]);
+						//printf("%d\n",in_real[k]);
+						//printf("%d\n",in_img[k]);
 					}
 				}
 			}
 			else
 			{
+				//printf("input %d is NOT complex \n", i);
 				ins[i].is_in_cmplx=0;
 				size = scilab_getDim2d(env, in[i], &row, &col);
 				ins[i].n_in_rows = row;

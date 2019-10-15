@@ -16,7 +16,7 @@ clear
 try ulink
 end
 
-help_from_sci("macros","help/en_US")
+//help_from_sci("macros","help/en_US")
 exec builder.sce
 exec loader.sce
 
