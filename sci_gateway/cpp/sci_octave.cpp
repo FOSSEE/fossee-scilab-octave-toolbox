@@ -135,6 +135,11 @@ int sci_octave_fun(scilabEnv env, int nin, scilabVar* in, int nopt, scilabOpt* o
 
 			}
 		}
+		else
+		    {
+        Scierror(999, _("%s: Wrong type of input argument %d.\n"), fname, i);
+        return STATUS_ERROR;
+    }
 	}
 
 			int status_fun = fun(argptr, funptr);
