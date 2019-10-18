@@ -1,0 +1,111 @@
+<html><head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>octave_fun</title>
+    <style type="text/css" media="all">
+      @import url("scilab_code.css");
+      @import url("xml_code.css");
+      @import url("c_code.css");
+      @import url("style.css");
+    </style>
+  </head>
+  <body>
+    <div class="manualnavbar">
+    <table width="100%"><tr>
+      <td width="30%">
+    	<span class="previous"><a href="section_597319ec0f8f262cff8ce5d679429f35.html">&lt;&lt; scilab_octave</a></span>
+
+      </td>
+      <td width="40%" class="center">
+      	<span class="top"><a href="section_597319ec0f8f262cff8ce5d679429f35.html">scilab_octave</a></span>
+
+      </td>
+      <td width="30%" class="next">
+      	
+      </td>
+    </tr></table>
+      <hr />
+    </div>
+
+
+
+    <span class="path"><a href="index.html">scilab_octave</a> &gt;&gt; <a href="section_597319ec0f8f262cff8ce5d679429f35.html">scilab_octave</a> &gt; octave_fun</span>
+
+    <br /><br />
+    <div class="refnamediv"><h1 class="refname">octave_fun</h1>
+    <p class="refpurpose">Calls an octave function with given inputs and returns the expected output</p></div>
+
+
+<div class="refsynopsisdiv"><h3 class="title">Syntax</h3>
+   <div class="synopsis"><pre><span class="default">[</span><span class="default">y1</span><span class="default">, </span><span class="default">y2</span><span class="default">, ...] = </span><span class="functionid">octave_fun</span><span class="default">(</span>&#0034;<span class="default">octave_function</span>&#0034;<span class="default">,</span><span class="default">input1</span><span class="default">,</span><span class="default">input2</span><span class="default">,...)</span>
+<span class="default">[</span><span class="default">y1</span><span class="default">, </span><span class="default">y2</span><span class="default">, ...] = </span><span class="functionid">octave_fun</span><span class="default">(</span>&#0034;<span class="default">octave_function</span>&#0034;<span class="default">,</span><span class="default">input1</span><span class="default">,</span><span class="default">input2</span><span class="default">,...,</span><span class="default">optional_input1</span><span class="default">,</span><span class="default">optional_input2</span><span class="default">,...)</span>
+<span class="default">[</span><span class="default">y1</span><span class="default">, </span><span class="default">y2</span><span class="default">, ...] = </span><span class="functionid">octave_fun</span><span class="default">(</span>&#0034;<span class="default">octave_function</span>&#0034;<span class="default">,</span>&#0034;<span class="default">octave_package</span>&#0034;<span class="default">,</span><span class="default">input1</span><span class="default">,</span><span class="default">input2</span><span class="default">,...)</span>
+<span class="default">[</span><span class="default">y1</span><span class="default">, </span><span class="default">y2</span><span class="default">, ...] = </span><span class="functionid">octave_fun</span><span class="default">(</span>&#0034;<span class="default">octave_function</span>&#0034;<span class="default">,</span>&#0034;<span class="default">octave_package</span>&#0034;<span class="default">,</span><span class="default">input1</span><span class="default">,</span><span class="default">input2</span><span class="default">,...,</span><span class="default">optional_input1</span><span class="default">,</span><span class="default">optional_input2</span><span class="default">,...)</span></pre></div></div>
+
+<div class="refsection"><h3 class="title">Parameters</h3>
+   <dl><dt><span class="term">y :</span>
+            <dd><p class="para">ouput as returned by octave. It can be a vector or matrix of doubles</p></dd></dt>
+        <dt><span class="term">octave_function :</span>
+            <dd><p class="para">name of the function in octave that has to be called. It has to be a string in double quotes</p></dd></dt>
+        <dt><span class="term">input :</span>
+            <dd><p class="para">input as expected by the octave function. It can be a vector or matrix of doubles</p></dd></dt>
+        <dt><span class="term">optional_input :</span>
+            <dd><p class="para">an optional argument that the given octave function can accept. It has to be a string in double quotes</p></dd></dt>
+        <dt><span class="term">octave_package :</span>
+            <dd><p class="para">name of the package in octave that has to be loaded as required by the octave function. It has to be a string in double quotes</p></dd></dt></dl></div>
+
+<div class="refsection"><h3 class="title">Description</h3>
+   <p class="para">This function accepts an octave function name with the relevant inputs and returns the output as generated. It requires Octave to be installed along with necessary packages.</p>
+   <p class="para"></p>
+   <p class="para"></p></div>
+
+<div class="refsection"><h3 class="title">Examples</h3>
+   <div class="programlisting"><table border="0" width="100%"><tr><td width="98%"><pre class="scilabcode"><span class="scilabcomment">// Finding the inverse of a matrix using octave</span>
+<span class="scilabid">A</span><span class="scilaboperator">=</span><span class="scilabopenclose">[</span><span class="scilabnumber">1</span> <span class="scilabnumber">2</span> <span class="scilabnumber">3</span><span class="scilabdefault">;</span><span class="scilabnumber">4</span> <span class="scilabnumber">5</span> <span class="scilabnumber">6</span><span class="scilabdefault">;</span><span class="scilabnumber">7</span> <span class="scilabnumber">8</span> <span class="scilabnumber">0</span><span class="scilabopenclose">]</span>
+<span class="scilabid">y</span> <span class="scilaboperator">=</span> <span class="scilabid">octave_fun</span><span class="scilabopenclose">(</span><span class="scilabstring">&#0034;</span><span class="scilabstring">inv</span><span class="scilabstring">&#0034;</span><span class="scilabdefault">,</span><span class="scilabid">A</span><span class="scilabopenclose">)</span>
+<span class="scilabid">y</span><span class="scilaboperator">*</span><span class="scilabid">A</span></pre></td><td valign="top"><a href="scilab://scilab.execexample/"><img src="ScilabExecute.png" border="0"/></a></td><td valign="top"><a href="scilab://scilab.editexample/"><img src="ScilabEdit.png" border="0"/></a></td><td></td></tr></table></div></div>
+
+<div class="refsection"><h3 class="title">Examples</h3>
+   <div class="programlisting"><table border="0" width="100%"><tr><td width="98%"><pre class="scilabcode"><span class="scilabcomment">// Finding the roots of a polynomial using its coefficients as inputs, using octave</span>
+<span class="scilabid">p</span> <span class="scilaboperator">=</span> <span class="scilabopenclose">[</span><span class="scilabnumber">1</span> <span class="scilabnumber">2</span> <span class="scilabnumber">3</span><span class="scilabopenclose">]</span><span class="scilabdefault">;</span>
+<span class="scilabid">y</span> <span class="scilaboperator">=</span> <span class="scilabid">octave_fun</span><span class="scilabopenclose">(</span><span class="scilabstring">&#0034;</span><span class="scilabstring">roots</span><span class="scilabstring">&#0034;</span><span class="scilabdefault">,</span><span class="scilabid">p</span><span class="scilabopenclose">)</span></pre></td><td valign="top"><a href="scilab://scilab.execexample/"><img src="ScilabExecute.png" border="0"/></a></td><td valign="top"><a href="scilab://scilab.editexample/"><img src="ScilabEdit.png" border="0"/></a></td><td></td></tr></table></div></div>
+
+<div class="refsection"><h3 class="title">Examples</h3>
+   <div class="programlisting"><table border="0" width="100%"><tr><td width="98%"><pre class="scilabcode"><span class="scilabcomment">// Generating filter coefficients of a Hamming window of length M, using octave.</span>
+<span class="scilabid">M</span> <span class="scilaboperator">=</span> <span class="scilabnumber">5</span>
+<span class="scilabid">y</span> <span class="scilaboperator">=</span> <span class="scilabid">octave_fun</span><span class="scilabopenclose">(</span><span class="scilabstring">&#0034;</span><span class="scilabstring">hamming</span><span class="scilabstring">&#0034;</span><span class="scilabdefault">,</span><span class="scilabid">M</span><span class="scilabopenclose">)</span></pre></td><td valign="top"><a href="scilab://scilab.execexample/"><img src="ScilabExecute.png" border="0"/></a></td><td valign="top"><a href="scilab://scilab.editexample/"><img src="ScilabEdit.png" border="0"/></a></td><td></td></tr></table></div></div>
+
+<div class="refsection"><h3 class="title">Examples</h3>
+   <div class="programlisting"><table border="0" width="100%"><tr><td width="98%"><pre class="scilabcode"><span class="scilabcomment">// Generating filter coefficients of a Hamming window of length M with optional arguments, using octave.</span>
+<span class="scilabid">M</span> <span class="scilaboperator">=</span> <span class="scilabnumber">5</span>
+<span class="scilabid">y</span> <span class="scilaboperator">=</span> <span class="scilabid">octave_fun</span><span class="scilabopenclose">(</span><span class="scilabstring">&#0034;</span><span class="scilabstring">hamming</span><span class="scilabstring">&#0034;</span><span class="scilabdefault">,</span><span class="scilabid">M</span><span class="scilabdefault">,</span><span class="scilabstring">&#0034;</span><span class="scilabstring">periodic</span><span class="scilabstring">&#0034;</span><span class="scilabopenclose">)</span></pre></td><td valign="top"><a href="scilab://scilab.execexample/"><img src="ScilabExecute.png" border="0"/></a></td><td valign="top"><a href="scilab://scilab.editexample/"><img src="ScilabEdit.png" border="0"/></a></td><td></td></tr></table></div></div>
+
+<div class="refsection"><h3 class="title">Examples</h3>
+   <div class="programlisting"><table border="0" width="100%"><tr><td width="98%"><pre class="scilabcode"><span class="scilabcomment">// Generating an elliptic or Cauer filter with given passband ripple and stopband attenuation, using octave and its </span><span class="scilabcomment">&#0034;</span><span class="scilabcomment">signal</span><span class="scilabcomment">&#0034;</span><span class="scilabcomment"> package.</span>
+<span class="scilabcomment">// See help in octave for more information about </span><span class="scilabcomment">&#0034;</span><span class="scilabcomment">ellip</span><span class="scilabcomment">&#0034;</span><span class="scilabcomment"> function.</span>
+<span class="scilabcomment">// Note that this example requires the </span><span class="scilabcomment">&#0034;</span><span class="scilabcomment">signal</span><span class="scilabcomment">&#0034;</span><span class="scilabcomment"> package to be installed in octave.</span>
+<span class="scilabopenclose">[</span><span class="scilabid">b</span><span class="scilabdefault">,</span> <span class="scilabid">a</span><span class="scilabopenclose">]</span><span class="scilaboperator">=</span><span class="scilabid">octave_fun</span><span class="scilabopenclose">(</span><span class="scilabstring">&#0034;</span><span class="scilabstring">ellip</span><span class="scilabstring">&#0034;</span><span class="scilabdefault">,</span><span class="scilabstring">&#0034;</span><span class="scilabstring">signal</span><span class="scilabstring">&#0034;</span><span class="scilabdefault">,</span><span class="scilabnumber">5</span><span class="scilabdefault">,</span><span class="scilabnumber">1</span><span class="scilabdefault">,</span><span class="scilabnumber">90</span><span class="scilabdefault">,</span><span class="scilabopenclose">[</span><span class="scilabnumber">0.1</span> <span class="scilabnumber">0.2</span><span class="scilabopenclose">]</span><span class="scilabopenclose">)</span></pre></td><td valign="top"><a href="scilab://scilab.execexample/"><img src="ScilabExecute.png" border="0"/></a></td><td valign="top"><a href="scilab://scilab.editexample/"><img src="ScilabEdit.png" border="0"/></a></td><td></td></tr></table></div></div>
+
+<div class="refsection"><h3 class="title">Authors</h3>
+   <ul class="itemizedlist"><li class="member">Rupak Rokade</li></ul></div>
+    <br />
+
+    <div class="manualnavbar">
+    <table width="100%">
+    <tr><td colspan="3" class="next"><a href="http://bugzilla.scilab.org/enter_bug.cgi?product=Scilab%20software&component=Documentation%20pages" class="ulink">Report an issue</a></td></tr>
+<tr>
+      <td width="30%">
+    	<span class="previous"><a href="section_597319ec0f8f262cff8ce5d679429f35.html">&lt;&lt; scilab_octave</a></span>
+
+      </td>
+      <td width="40%" class="center">
+      	<span class="top"><a href="section_597319ec0f8f262cff8ce5d679429f35.html">scilab_octave</a></span>
+
+      </td>
+      <td width="30%" class="next">
+      	
+      </td>
+    </tr></table>
+      <hr />
+    </div>
+  </body>
+</html>

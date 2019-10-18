@@ -55,7 +55,9 @@ function [y] = octave_fun()
 		//
     // Examples
     //
-    // // Generating an elliptic or Cauer filter with given passband ripple and stopband attenuation, using octave and its "signal" package. See help in octave for more information about "ellip" function
+    // // Generating an elliptic or Cauer filter with given passband ripple and stopband attenuation, using octave and its "signal" package. 
+		// // See help in octave for more information about "ellip" function. 
+		// // Note that this example requires the "signal" package to be installed in octave.
     // [b, a]=octave_fun("ellip","signal",5,1,90,[0.1 0.2])
 		//
 // Authors
