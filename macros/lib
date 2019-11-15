@@ -1,4 +1,4 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <scilablib name="scilab_octavelib">
-  <macro name="octave_fun" file="octave_fun.bin" md5="f6d4e5358236b998f4f2a59ddd85e8e7"/>
+  <macro name="octave_fun" file="octave_fun.bin" md5="6ad8fad09432830150f1556a9cf59451"/>
 </scilablib>
