@@ -4,7 +4,7 @@
 oldmode = mode();      mode(-1);
 oldlines = lines()(2); lines(0);
 try
-    exec(get_absolute_file_path("loader.sce")+"etc/"+"scilab_toolbox.start");
+    exec(get_absolute_file_path("loader.sce")+"etc/"+"scilab_octave.start");
 catch
     [errmsg, tmp, nline, func] = lasterror()
     msg = "%s: error on line #%d: ""%s""\n"
