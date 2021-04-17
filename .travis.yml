@@ -1,4 +1,4 @@
-language: scilab
+# language: scilab
 dist: bionic
 before_install:
  - sudo apt-get update
