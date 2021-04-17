@@ -9,9 +9,11 @@
 // Organization: FOSSEE, IIT Bombay
 // Email: toolbox@scilab.in
 
+#include <iostream>
 #include <string>
 #include "wchar.h"
 #include <cstdlib>
+#include <sstream>
 
 extern "C"
 {
@@ -152,8 +154,22 @@ int sci_octave_fun(scilabEnv env, int nin, scilabVar* in, int nopt, scilabOpt* o
         return STATUS_ERROR;
     }
 	}
+                         
+                        // Capturing Errors and warnings
+                        std::stringstream buffer_err;
+
+                        // set our error buffer
+                        std::cerr.rdbuf(buffer_err.rdbuf());
 
 			int status_fun = fun(argptr, funptr);
+
+                        // grab error buffer contents
+                        std::string err = buffer_err.str(); 
+                        if(!err.empty())
+                        sciprint("%s", err.c_str());
+                        buffer_err.str("");
+
+
 		//printf("in scilab status_fun is: %d\n", status_fun);
 			//printf("in scilab funcall.n_out_arguments is: %d\n", funcall.n_out_arguments);
 			//printf("in scilab funcall.n_out_user is: %d\n", funcall.n_out_user);
@@ -164,7 +180,7 @@ int sci_octave_fun(scilabEnv env, int nin, scilabVar* in, int nopt, scilabOpt* o
 //printf("in scilab ouput args are: %d\n", funcall.n_out_arguments);
 	if(status_fun==1)
 	{
-		Scierror(999, "\nOctave unable to process!\nCorrect usage:\n octave_fun(\"octave_function\",input1,input2,...)\n octave_fun(\"octave_function\",input1,input2,...,optional_input1,optional_input2,...)\n octave_fun(\"octave_function\",\"octave_package\",input1,input2,...)\n octave_fun(\"octave_function\",\"octave_package\",input1,input2,...,optional_input1,optional_input2,...)\n");
+		Scierror(999, "Scilab unable to process!\n");
 		return 1;
 	}
 	else if(funcall.n_out_user <= funcall.n_out_arguments)

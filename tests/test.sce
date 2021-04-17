@@ -290,12 +290,12 @@ end
 
 /////////Test case for       bilinear                 //////////
 
-[b a] = octave_fun("bilinear","signal",[1 2 3], [4 5 6], 1, 1);
+[b a] = octave_fun("bilinear","signal",[1 2 3], [4 5 6], 1);
 b = round(b*10000)/10000;
 a = round(a*10000)/10000;
 
 
-if(round(a) == [1 7 18 14])
+if(round(a) == [1 -1 0])
            test_pass=[test_pass,1];
 else
 	test_pass=[test_pass,0];
