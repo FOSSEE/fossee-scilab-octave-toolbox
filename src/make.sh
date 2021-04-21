@@ -9,3 +9,4 @@ make install
 
 cd ..
 sed '40,41d' ./builder.sce
+sed '37d' ./builder.sce
