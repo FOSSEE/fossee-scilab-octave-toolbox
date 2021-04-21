@@ -1,3 +1,6 @@
+exec builder.sce
+exec loader.sce
+
 
 //exec build.sce
 test_pass=[]
