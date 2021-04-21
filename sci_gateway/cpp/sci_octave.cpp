@@ -58,7 +58,7 @@ int sci_octave_fun(scilabEnv env, int nin, scilabVar* in, int nopt, scilabOpt* o
 	char* c;
 	double* n = NULL;
 	int row = 0;
-  int col = 0;
+  	int col = 0;
 	double* in_real;
 	double* in_img;
 
@@ -149,27 +149,26 @@ int sci_octave_fun(scilabEnv env, int nin, scilabVar* in, int nopt, scilabOpt* o
 			}
 		}
 		else
-		    {
-        Scierror(999, _("%s: Wrong type of input argument %d.\n"), fname, i);
-        return STATUS_ERROR;
-    }
+		{
+        	Scierror(999, _("%s: Wrong type of input argument %d.\n"), fname, i);
+        	return STATUS_ERROR;
+    	}
 	}
                          
-                        // Capturing Errors and warnings
-                        std::stringstream buffer_err;
+    // Capturing Errors and warnings
+    std::stringstream buffer_err;
 
-                        // set our error buffer
-                        std::cerr.rdbuf(buffer_err.rdbuf());
+    // set our error buffer
+	std::cerr.rdbuf(buffer_err.rdbuf());
 
-			int status_fun = fun(argptr, funptr);
+	int status_fun = fun(argptr, funptr);
 
-                        // grab error buffer contents
-                        std::string err = buffer_err.str(); 
-                        if(!err.empty())
-                        sciprint("%s", err.c_str());
-                        buffer_err.str("");
+    // grab error buffer contents
+    std::string err = buffer_err.str(); 
 
-
+	if(!err.empty() && status_fun==0)
+    sciprint("Warning from Octave\n%s", err.c_str());
+    buffer_err.str("");
 		//printf("in scilab status_fun is: %d\n", status_fun);
 			//printf("in scilab funcall.n_out_arguments is: %d\n", funcall.n_out_arguments);
 			//printf("in scilab funcall.n_out_user is: %d\n", funcall.n_out_user);
@@ -180,7 +179,7 @@ int sci_octave_fun(scilabEnv env, int nin, scilabVar* in, int nopt, scilabOpt* o
 //printf("in scilab ouput args are: %d\n", funcall.n_out_arguments);
 	if(status_fun==1)
 	{
-		Scierror(999, "");
+		Scierror(999,"Error from Octave\n%s", err.c_str());
 		return 1;
 	}
 	else if(funcall.n_out_user <= funcall.n_out_arguments)
@@ -227,9 +226,9 @@ int sci_octave_fun(scilabEnv env, int nin, scilabVar* in, int nopt, scilabOpt* o
 	}
 	else
 	{
-			Scierror(77, _("%s: Wrong number of output arguments: This function can return a maximum of %d output(s).\n"), fname, funcall.n_out_arguments);
-			return 1;
-		}
+		Scierror(77, _("%s: Wrong number of output arguments: This function can return a maximum of %d output(s).\n"), fname, funcall.n_out_arguments);
+		return 1;
+	}
 
 
 
