@@ -17,4 +17,4 @@ script:
 - cd src/
 - bash make.sh
 - cd $TRAVIS_BUILD_DIR/
-- scilab-cli -f tests/test.sce
+- scilab-cli -f tests/test.sce -quit
