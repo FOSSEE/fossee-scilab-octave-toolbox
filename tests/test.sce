@@ -382,3 +382,5 @@ disp(length(test_pass),"Total functions tested:")
 disp("ALL OK")
 //exit()
 end
+
+exit()
