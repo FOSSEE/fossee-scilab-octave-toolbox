@@ -8,5 +8,5 @@ make install
 # removed the  tbx_builder_gateway(toolbox_dir) and tbx_build_localization(toolbox_dir) funciton calls from buider.sce
 
 cd ..
-sed '40,41d' ./builder.sce
-sed -i '38d' ./builder.sce
+sed -i '37d' ./builder.sce
+sed -i '40,41d' ./builder.sce
