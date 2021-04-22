@@ -1,14 +1,20 @@
-language: scilab
-dist: bionic
+language: cpp
+dist: focal
 before_install:
  - sudo apt-get update
- - wget https://launchpad.net/ubuntu/+archive/primary/+sourcefiles/scilab/6.0.1-1ubuntu1/scilab_6.0.1-1ubuntu1.debian.tar.xz
- - tar -xf scilab_6.0.1-1ubuntu1.debian.tar.xz
- - bash scilab_6.0.1-1ubuntu1.debian/scilab.install
+#  - wget https://launchpad.net/ubuntu/+archive/primary/+sourcefiles/scilab/6.0.1-1ubuntu1/scilab_6.0.1-1ubuntu1.debian.tar.xz
+#  - tar -xf scilab_6.0.1-1ubuntu1.debian.tar.xz
+#  - bash debian/scilab.install
+ - sudo apt-get install scilab
  - sudo apt-get install octave
  - sudo apt-get install build-essential
  - sudo apt-get install liboctave-dev
+ - sudo apt-get install octave-signal
+
 
 script:
- - octave-cli tests/oct-setup.m
- - scilab -nw -f tests/test.sce
+- cd $TRAVIS_BUILD_DIR/
+- cd src/
+- bash make.sh
+- cd $TRAVIS_BUILD_DIR/
+- scilab-cli -f tests/test.sce 
