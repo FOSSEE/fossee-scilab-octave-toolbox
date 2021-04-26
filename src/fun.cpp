@@ -183,7 +183,7 @@ extern "C"
 		}
 		catch (const octave::execution_exception&)
 		{
-			std::cerr << "error encountered in Octave evaluator!" << std::endl;
+			//std::cerr << "error encountered in Octave evaluator!" << std::endl;
 			return 1;
 		}
 		return 0;
