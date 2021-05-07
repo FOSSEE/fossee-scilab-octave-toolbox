@@ -74,7 +74,7 @@ extern "C"
 				ins[i].type = TYPE_DOUBLE;
 				if (scilab_isComplex(env, in[i]) == 1)
 				{
-					//printf("input %d is complex \n", i);
+					//printf("input %d is complex1 \n", i);
 					ins[i].is_in_cmplx = 1;
 					size = scilab_getDim2d(env, in[i], &row, &col);
 					ins[i].n_in_rows = row;
@@ -95,8 +95,8 @@ extern "C"
 							rd[k] = in_real[p + q * row];
 							cd[k] = in_img[p + q * row];
 							k++;
-							//printf("%d\n",in_real[k]);
-							//printf("%d\n",in_img[k]);
+							printf("%d\n",in_real[k]);
+							printf("%d\n",in_img[k]);
 						}
 					}
 				}
@@ -126,7 +126,7 @@ extern "C"
 				}
 				/////////////////////////////////////////
 			}
-			else if (scilab_getType(env, in[i]) == 10)
+			else if (scilab_getType(env, in[i]) == 10)  // Checking for String Argument
 			{
 				ins[i].is_in_cmplx = 0;
 				wchar_t *in1 = 0;
@@ -152,12 +152,83 @@ extern "C"
 					//printf("in scilab strin is: %s\n", c);
 				}
 			}
+            else if (scilab_getType(env, in[i]) == 18) //Checking for Struct input
+            {
+                wchar_t** fields = NULL;
+                scilabVar struct_out;       
+				int dims=0;      
+                                
+                dims=scilab_getFields(env,in[i],&fields); // Retrieving Struct Fields
+                //std::cout<<dims<<std::endl;
+                                 
+                for (j = 0; j < dims; j++)
+                {
+                    wcstombs(str, fields[j], sizeof(str));
+                    std::cout<<str<<std::endl;
+                    struct_out=scilab_getStructMatrix2dData(env,in[i],fields[j],0,0); // Retrieving Struct Data
+
+                    // Checking Type of data in struct
+					if (scilab_getType(env,struct_out) == 1)
+					{
+						ins[i].type = TYPE_DOUBLE;
+						if (scilab_isComplex(env,struct_out) == 1)
+						{
+							//printf("input %d is complex \n", i)
+							size = scilab_getDim2d(env, struct_out, &row, &col);
+							scilab_getDoubleComplexArray(env, struct_out, &in_real, &in_img);
+
+							////This code snippet is to flatten matrix row wise and then store it
+							int p, q, k = 0;
+							for (p = 0; p < row; p++)
+							{
+								for (q = 0; q < col; q++)
+								{
+									printf("%d\n",in_real[p + q * row]);
+									printf("%d\n",in_img[p + q * row]);
+									k++;
+								}
+							}
+						}
+						else
+						{
+							//printf("input %d is NOT complex \n", i);
+							size = scilab_getDim2d(env, struct_out, &row, &col);
+							scilab_getDoubleArray(env, struct_out, &n);
+
+							////This code snippet is to flatten matrix row wise and then store it
+							int p, q, k = 0;
+							for (p = 0; p < row; p++)
+							{
+								for (q = 0; q < col; q++)
+								{
+									printf("%f\n",n[k]);
+									k++;
+									
+								}
+							}
+						}
+					}
+					else if (scilab_getType(env,struct_out) == 10)
+					{
+						wchar_t *in1 = 0;
+
+						scilab_getString(env, struct_out, &in1);
+						//printf("%S\n", in1);
+
+						wcstombs(str, in1, sizeof(str));
+						printf("%s\n", str);
+					}
+				}
+                Scierror(999, _("%s: Encountered Struct at %d Argument.\n"), fname, i);
+				return STATUS_ERROR;
+            }
 			else
 			{
 				Scierror(999, _("%s: Wrong type of input argument %d.\n"), fname, i);
 				return STATUS_ERROR;
 			}
 		}
+                
 
 		// Capturing Errors and warnings
 		std::stringstream buffer_err;
