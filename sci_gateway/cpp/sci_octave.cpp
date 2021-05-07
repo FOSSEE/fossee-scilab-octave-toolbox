@@ -242,7 +242,7 @@ extern "C"
 		std::string err = buffer_err.str();
 
 		if (!err.empty() && status_fun == 0)
-			sciprint("Warning from Octave\n%s", err.c_str());
+			sciprint("Message from Octave\n%s", err.c_str());
 		buffer_err.str("");
 		//printf("in scilab status_fun is: %d\n", status_fun);
 		//printf("in scilab funcall.n_out_arguments is: %d\n", funcall.n_out_arguments);
