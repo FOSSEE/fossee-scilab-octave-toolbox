@@ -40,7 +40,7 @@ extern "C"
 
 	{
 		//printf("nin: %d\n", nin);
-		if (nin < 2)
+		if (nin < 1)
 		{
 			Scierror(999, _("%s: Wrong number of input arguments. Atleast %d expected.\n"), fname, 2);
 			return STATUS_ERROR;
@@ -74,7 +74,7 @@ extern "C"
 				ins[i].type = TYPE_DOUBLE;
 				if (scilab_isComplex(env, in[i]) == 1)
 				{
-					//printf("input %d is complex1 \n", i);
+					//printf("input %d is complex \n", i);
 					ins[i].is_in_cmplx = 1;
 					size = scilab_getDim2d(env, in[i], &row, &col);
 					ins[i].n_in_rows = row;
@@ -95,8 +95,8 @@ extern "C"
 							rd[k] = in_real[p + q * row];
 							cd[k] = in_img[p + q * row];
 							k++;
-							printf("%d\n",in_real[k]);
-							printf("%d\n",in_img[k]);
+							//printf("%d\n",in_real[k]);
+							//printf("%d\n",in_img[k]);
 						}
 					}
 				}
@@ -126,7 +126,7 @@ extern "C"
 				}
 				/////////////////////////////////////////
 			}
-			else if (scilab_getType(env, in[i]) == 10)  // Checking for String Argument
+			else if (scilab_getType(env, in[i]) == 10)
 			{
 				ins[i].is_in_cmplx = 0;
 				wchar_t *in1 = 0;
@@ -143,7 +143,7 @@ extern "C"
 					ins[i].n_in_rows = 1;
 					ins[i].n_in_cols = strlen(str);
 					size = (ins[i].n_in_rows) * (ins[i].n_in_cols);
-					ins[i].in_data_real = malloc(sizeof(char) * size + 1);
+					ins[i].in_data_real = malloc(sizeof(char) * (size + 1));
 					c = (char *)ins[i].in_data_real;
 					int ci;
 
@@ -152,30 +152,47 @@ extern "C"
 					//printf("in scilab strin is: %s\n", c);
 				}
 			}
-            else if (scilab_getType(env, in[i]) == 18) //Checking for Struct input
+			else if (scilab_getType(env, in[i]) == 18) //Checking for Struct input
             {
-                wchar_t** fields = NULL;
+				ins[i].type = TYPE_STRUCT;
+                wchar_t** keys = NULL;
                 scilabVar struct_out;       
-				int dims=0;      
+				int dims = 0;      
                                 
-                dims=scilab_getFields(env,in[i],&fields); // Retrieving Struct Fields
-                //std::cout<<dims<<std::endl;
-                                 
+                dims = scilab_getFields(env, in[i], &keys); // Retrieving Struct Keys
+				ins[i].n_in_struct_len = dims;
+				//std::cout<<dims<<std::endl;
+				
+				// allocating memory for keys and values
+				ins[i].in_struct = (FUNCSTRUCT*) malloc(sizeof(FUNCSTRUCT) * dims);
+				FUNCSTRUCT* inStruct = ins[i].in_struct;
+				                 
                 for (j = 0; j < dims; j++)
                 {
-                    wcstombs(str, fields[j], sizeof(str));
-                    std::cout<<str<<std::endl;
-                    struct_out=scilab_getStructMatrix2dData(env,in[i],fields[j],0,0); // Retrieving Struct Data
+					// storing the key
+                    inStruct[j].key = malloc(sizeof(keys[j]) + 1);
+					wcpcpy((wchar_t*) inStruct[j].key, keys[j]);
 
-                    // Checking Type of data in struct
-					if (scilab_getType(env,struct_out) == 1)
+                    struct_out = scilab_getStructMatrix2dData(env, in[i], keys[j], 0, 0); // Retrieving Curr Value
+
+                    // Checking Type of value in struct
+					if (scilab_getType(env,struct_out) == 1) 
 					{
-						ins[i].type = TYPE_DOUBLE;
+						// Double Value
 						if (scilab_isComplex(env,struct_out) == 1)
 						{
+							// Complex Value
 							//printf("input %d is complex \n", i)
+							inStruct[j].type = TYPE_COMPLEX;
 							size = scilab_getDim2d(env, struct_out, &row, &col);
+							inStruct[j].rows = row;
+							inStruct[j].cols = col;
 							scilab_getDoubleComplexArray(env, struct_out, &in_real, &in_img);
+
+							inStruct[j].dataReal = malloc(sizeof(double) * size);
+							inStruct[j].dataImg = malloc(sizeof(double) * size);
+							rd = (double *) inStruct[j].dataReal;
+							cd = (double *) inStruct[j].dataImg;
 
 							////This code snippet is to flatten matrix row wise and then store it
 							int p, q, k = 0;
@@ -183,17 +200,27 @@ extern "C"
 							{
 								for (q = 0; q < col; q++)
 								{
-									printf("%d\n",in_real[p + q * row]);
-									printf("%d\n",in_img[p + q * row]);
+									// printf("%d\n",in_real[p + q * row]);
+									// printf("%d\n",in_img[p + q * row]);
+									rd[k] = in_real[p + q * row];
+									cd[k] = in_img[p + q * row];
 									k++;
 								}
 							}
 						}
 						else
 						{
+							// Real Values Only
+							inStruct[j].type = TYPE_DOUBLE;
 							//printf("input %d is NOT complex \n", i);
 							size = scilab_getDim2d(env, struct_out, &row, &col);
 							scilab_getDoubleArray(env, struct_out, &n);
+
+							inStruct[j].rows = row;
+							inStruct[j].cols = col;
+
+							inStruct[j].dataReal = malloc(sizeof(double) * size);
+							d = (double *) inStruct[j].dataReal;
 
 							////This code snippet is to flatten matrix row wise and then store it
 							int p, q, k = 0;
@@ -201,26 +228,31 @@ extern "C"
 							{
 								for (q = 0; q < col; q++)
 								{
-									printf("%f\n",n[k]);
-									k++;
-									
+									// printf("%f\n",n[k]);
+									d[k] = n[k];
+									k++;	
 								}
 							}
 						}
 					}
 					else if (scilab_getType(env,struct_out) == 10)
 					{
-						wchar_t *in1 = 0;
+						inStruct[j].type = TYPE_STRING;
+						wchar_t *in1 = NULL;
 
 						scilab_getString(env, struct_out, &in1);
 						//printf("%S\n", in1);
 
-						wcstombs(str, in1, sizeof(str));
-						printf("%s\n", str);
+						inStruct[j].str = malloc(sizeof(wchar_t) * (wcslen(in1) + 1));
+						wcpcpy((wchar_t*) inStruct[j].str, in1);
+						// printf("%s\n", str);
+					}
+					else
+					{
+						Scierror(999, _("%s: Wrong type of input argument %d.\n"), fname, i);
+						return STATUS_ERROR;
 					}
 				}
-                Scierror(999, _("%s: Encountered Struct at %d Argument.\n"), fname, i);
-				return STATUS_ERROR;
             }
 			else
 			{
@@ -228,7 +260,6 @@ extern "C"
 				return STATUS_ERROR;
 			}
 		}
-                
 
 		// Capturing Errors and warnings
 		std::stringstream buffer_err;
@@ -236,21 +267,23 @@ extern "C"
 		// set our error buffer
 		std::cerr.rdbuf(buffer_err.rdbuf());
 
+		// call the fun() function
 		int status_fun = fun(argptr, funptr);
 
 		// grab error buffer contents
 		std::string err = buffer_err.str();
 
 		if (!err.empty() && status_fun == 0)
-			sciprint("Message from Octave\n%s", err.c_str());
+			sciprint("Warning from Octave\n%s", err.c_str());
 		buffer_err.str("");
+		
 		//printf("in scilab status_fun is: %d\n", status_fun);
 		//printf("in scilab funcall.n_out_arguments is: %d\n", funcall.n_out_arguments);
 		//printf("in scilab funcall.n_out_user is: %d\n", funcall.n_out_user);
 		//printf("in scilab ins[0].n_out_rows is: %d\n", ins[0].n_out_rows);
 		//printf("in scilab ins[0].n_out_cols is: %d\n", ins[0].n_out_cols);
-
 		//printf("in scilab ouput args are: %d\n", funcall.n_out_arguments);
+
 		if (status_fun == 1)
 		{
 			Scierror(999, "Error from Octave\n%s", err.c_str());
@@ -260,7 +293,6 @@ extern "C"
 		{
 			for (i = 0; i < nout; i++)
 			{
-
 				if (ins[i].is_out_cmplx == 1)
 				{
 					//printf("output %d is complex\n", i);
@@ -280,6 +312,59 @@ extern "C"
 					for (j = 0; j < len; j++)
 					{
 						out_img[j] = ocd[j];
+					}
+				}
+				else if (ins[i].is_out_struct == 1){
+					// creating scilab struct
+					out[i] = scilab_createStruct(env);
+					int structLen = ins[i].n_out_struct_len;
+					
+					FUNCSTRUCT* outStruct = ins[i].out_struct;
+
+					for (int j = 0; j < structLen; j++){
+						// std::printf("currKey in sciOctave.cpp OP: %ls\n", outStruct[j].key);
+						scilab_addField(env, out[i], (const wchar_t*) outStruct[j].key);
+						scilabVar currValue = NULL;
+						if (outStruct[j].type == TYPE_COMPLEX){
+							currValue = scilab_createDoubleMatrix2d(env, outStruct[j].rows, outStruct[j].cols, 1);
+							
+							double *outReal = NULL;
+							double *outImg = NULL;
+							scilab_getDoubleComplexArray(env, currValue, &outReal, &outImg);
+
+							double* dReal = (double *) outStruct[j].dataReal;
+							double* dImg = (double *) outStruct[j].dataImg;
+
+							int size = outStruct[j].rows * outStruct[j].cols;
+							for(int k = 0; k < size; k++){
+								outReal[k] = dReal[k];
+							}
+							for(int k = 0; k < size; k++){
+								outImg[k] = dImg[k];
+							}
+
+							// set the key-value pair in scilab struct
+							scilab_setStructMatrix2dData(env, out[i], (const wchar_t*) outStruct[j].key, 0, 0, currValue);
+						}
+						else if (outStruct[j].type == TYPE_DOUBLE){
+							currValue = scilab_createDoubleMatrix2d(env, outStruct[j].rows, outStruct[j].cols, 1);
+							
+							double *outReal = NULL;
+							scilab_getDoubleArray(env, currValue, &outReal);
+
+							double* dReal = (double *) outStruct[j].dataReal;
+							
+							int size = outStruct[j].rows * outStruct[j].cols;
+							for(int k = 0; k < size; k++){
+								outReal[k] = dReal[k];
+							}
+
+							// set the key-value pair in scilab struct
+							scilab_setStructMatrix2dData(env, out[i], (const wchar_t*) outStruct[j].key, 0, 0, currValue);
+						}
+						else if (outStruct[j].type == TYPE_STRING){
+							scilab_setStructMatrix2dData(env, out[i], (const wchar_t*) outStruct[j].key, 0, 0, scilab_createString(env, (const wchar_t*) outStruct[j].str));
+						}
 					}
 				}
 				else
@@ -303,21 +388,62 @@ extern "C"
 			Scierror(77, _("%s: Wrong number of output arguments: This function can return a maximum of %d output(s).\n"), fname, funcall.n_out_arguments);
 			return 1;
 		}
-
 		for (i = 0; i < nout; i++)
 		{
-			free(ins[i].out_data_real);
+			if (ins[i].is_out_struct == 1){
+				FUNCSTRUCT* tempStruct = ins[i].out_struct;
+				for (int j = 0; j < ins[i].n_out_struct_len; j++){
+					// std::wstring tempWStr((wchar_t *) tempStruct[j].key);
+					// std::string(tempWStr.begin(), tempWStr.end());
+					// std::cout << "freeing key: " << std::string(tempWStr.begin(), tempWStr.end()) << std::endl;
+					free(tempStruct[j].key);
+					if (tempStruct[j].type == TYPE_STRING){
+						free(tempStruct[j].str);
+					}
+					if (tempStruct[j].type == TYPE_DOUBLE){
+						free(tempStruct[j].dataReal);
+					}
+					if (tempStruct[j].type == TYPE_COMPLEX){
+						free(tempStruct[j].dataReal);
+						free(tempStruct[j].dataImg);
+					}
+				}
+				free(ins[i].out_struct);
+			}
+			else{
+				free(ins[i].out_data_real);
+			}
 
-			if (ins[i].is_out_cmplx == 1)
+			if (ins[i].is_out_cmplx == 1){
 				free(ins[i].out_data_img);
+			}
 		}
-
 		for (i = 0; i < nin; i++)
 		{
-			free(ins[i].in_data_real);
+			if(ins[i].type == TYPE_STRUCT){
+				FUNCSTRUCT* tempStruct = ins[i].in_struct;
+				for (int j = 0; j < ins[i].n_in_struct_len; j++){
+					free(tempStruct[j].key);
+					if (tempStruct[j].type == TYPE_STRING){
+						free(tempStruct[j].str);
+					}
+					if (tempStruct[j].type == TYPE_DOUBLE){
+						free(tempStruct[j].dataReal);
+					}
+					if (tempStruct[j].type == TYPE_COMPLEX){
+						free(tempStruct[j].dataReal);
+						free(tempStruct[j].dataImg);
+					}
+				}
+				free(ins[i].in_struct);
+			}
+			else{
+				free(ins[i].in_data_real);
+			}
 
-			if (ins[i].is_in_cmplx == 1)
+			if (ins[i].is_in_cmplx == 1){
 				free(ins[i].in_data_img);
+			}
 		}
 		return 0;
 	}
