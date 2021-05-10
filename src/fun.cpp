@@ -17,6 +17,7 @@
 #include <octave/interpreter.h>
 #include <math.h>
 #include <string>
+#include <cstring>
 #include "fun.h"
 
 extern "C"
@@ -110,6 +111,63 @@ extern "C"
 					str_count++;
 					//std::cout << "String is: " << c << '\n';
 				}
+				else if (inp[l].type == TYPE_STRUCT){
+					FUNCSTRUCT* inStruct = inp[l].in_struct;
+
+					octave_scalar_map inOctaveStruct;
+
+					// populate the octave structure
+					for (int j = 0; j < inp[l].n_in_struct_len; j++){
+						std::string currKey;
+						octave_value currValue;
+
+						// converting wchar_t* to string for octave
+						std::wstring currKeyWStr((wchar_t *) inStruct[j].key);
+						currKey = std::string(currKeyWStr.begin(), currKeyWStr.end());
+
+
+						// get Value 
+						if (inStruct[j].type == TYPE_COMPLEX){
+							ComplexMatrix currValueMatrix = ComplexMatrix(inStruct[j].rows, inStruct[j].cols);
+							double* dReal = (double *)inStruct[j].dataReal;
+							double* dImg = (double *)inStruct[j].dataImg;
+							k = 0;
+							for (int r = 0; r < inStruct[j].rows; r++)
+							{
+								for (int c = 0; c < inStruct[j].cols; c++)
+								{
+									Complex currItem(dReal[k], dImg[k]);
+									currValueMatrix(r, c) = currItem;
+									k++;
+								}
+							}
+							currValue = currValueMatrix;
+						}
+						else if(inStruct[j].type == TYPE_DOUBLE){
+							Matrix currValueMatrix = Matrix(inStruct[j].rows, inStruct[j].cols);
+							double* dReal = (double *)inStruct[j].dataReal;
+							k = 0;
+							for (int r = 0; r < inStruct[j].rows; r++)
+							{
+								for (int c = 0; c < inStruct[j].cols; c++)
+								{
+									currValueMatrix(r, c) = dReal[k];
+									k++;
+								}
+							}
+							currValue = currValueMatrix;
+						}
+						else if (inStruct[j].type == TYPE_STRING){
+							std::wstring currValueWStr((wchar_t *) inStruct[j].str);
+							std::string currValueStr(currValueWStr.begin(), currValueWStr.end());
+							currValue = octave_value(currValueStr);
+						}
+						inOctaveStruct.assign(currKey, currValue);
+					}
+
+					// insert struct to input octave list
+					in(l - str_count) = inOctaveStruct;
+				}
 			}
 
 			if (pkg == 1)
@@ -120,11 +178,11 @@ extern "C"
 
 			octave_value_list out = octave::feval(str_fun, in, funcall->n_out_user);
 
-			int row;
-			int col;
+			int row = 0;
+			int col = 0;
 			nouts = out.length();
 			funcall->n_out_arguments = nouts;
-			//std::cout << "funcall->n_out_arguments is: " << funcall->n_out_arguments << '\n';
+			// std::cout << "funcall->n_out_arguments is: " << funcall->n_out_arguments << '\n';
 
 			for (unsigned int ii = 0; ii < nouts; ii++)
 			{
@@ -154,6 +212,93 @@ extern "C"
 							//std::cout << "out img "<< k << " is :" << (double)imag(cmOut(k)) << '\n';
 							k++;
 						}
+					}
+				}
+				else if(out(ii).isstruct()){
+					inp[ii].is_out_struct = 1;
+					
+					octave_scalar_map outOctaveStruct = out(ii).scalar_map_value();
+					
+					int structLen = outOctaveStruct.nfields();
+					inp[ii].n_out_struct_len = structLen;
+					
+					inp[ii].out_struct = (FUNCSTRUCT *) malloc(sizeof(FUNCSTRUCT) * structLen);
+					FUNCSTRUCT* outStruct = inp[ii].out_struct;
+					
+					octave_scalar_map::iterator idx = outOctaveStruct.begin();
+					int j = 0;
+
+					// std::cout << "data in fun.cpp\n";
+					// populating structure
+					while (idx != outOctaveStruct.end()){
+						std::string currKey = outOctaveStruct.key(idx);
+						octave_value currValue = outOctaveStruct.contents(idx);
+
+						// storing key by converting string to wchar_t* for scilab
+						outStruct[j].key = malloc(sizeof(wchar_t) * (currKey.length() + 1));
+						mbstowcs((wchar_t *) outStruct[j].key, currKey.c_str(), currKey.length() + 1);
+						
+						// storing value
+						if (currValue.iscomplex()){
+							outStruct[j].type = TYPE_COMPLEX;	
+
+							ComplexMatrix currValueComplexMatrix(currValue.complex_matrix_value());
+							
+							row = currValueComplexMatrix.rows();
+							col = currValueComplexMatrix.columns();
+							outStruct[j].rows = row;
+							outStruct[j].cols = col;
+							
+							outStruct[j].dataReal = malloc(sizeof(double) * (row * col));
+							outStruct[j].dataImg = malloc(sizeof(double) * (row * col));
+							
+							double* dReal = (double *) outStruct[j].dataReal;
+							double* dImg = (double *) outStruct[j].dataImg;
+							
+							k = 0;
+							for (int r = 0; r < row; r++)
+							{
+								for (int c = 0; c < col; c++)
+								{
+									dReal[k] = real(currValueComplexMatrix(k));
+									dImg[k] = imag(currValueComplexMatrix(k));
+									k++;
+								}
+							}
+
+						}
+						else if (currValue.is_string()){
+							outStruct[j].type = TYPE_STRING;
+							std::string currValueStr = currValue.string_value();
+							outStruct[j].str = malloc(sizeof(wchar_t) * (currValueStr.length() + 1));
+							mbstowcs((wchar_t*) outStruct[j].str, currValueStr.c_str(), currValueStr.length() + 1);
+						}
+						else {
+							outStruct[j].type = TYPE_DOUBLE;
+							
+							Matrix currValueMatrix(currValue.matrix_value());
+
+							row = currValueMatrix.rows();
+							col = currValueMatrix.columns();
+							outStruct[j].rows = row;
+							outStruct[j].cols = col;
+
+							outStruct[j].dataReal = malloc(sizeof(double) * (row * col));
+							double* dReal = (double *) outStruct[j].dataReal;
+
+							k = 0;
+							for (int r = 0; r < row; r++)
+							{
+								for (int c = 0; c < col; c++)
+								{
+									dReal[k] = currValueMatrix(k);
+									k++;
+								}
+							}
+						}
+
+						j++;
+						idx++;
 					}
 				}
 				else
