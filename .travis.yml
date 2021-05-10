@@ -1,16 +1,15 @@
 language: cpp
+os: linux
 dist: focal
-before_install:
- - sudo apt-get update
-#  - wget https://launchpad.net/ubuntu/+archive/primary/+sourcefiles/scilab/6.0.1-1ubuntu1/scilab_6.0.1-1ubuntu1.debian.tar.xz
-#  - tar -xf scilab_6.0.1-1ubuntu1.debian.tar.xz
-#  - bash debian/scilab.install
- - sudo apt-get install scilab
- - sudo apt-get install octave
- - sudo apt-get install build-essential
- - sudo apt-get install liboctave-dev
- - sudo apt-get install octave-signal
-
+arch: arm64-graviton2
+addons:
+  apt:
+    packages:
+      - scilab
+      - octave
+      - build-essential
+      - liboctave-dev
+      - octave-signal
 
 script:
 - cd $TRAVIS_BUILD_DIR/
