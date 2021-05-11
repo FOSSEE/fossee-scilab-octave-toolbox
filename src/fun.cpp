@@ -98,17 +98,19 @@ extern "C"
 
 					char *c = (char *)inp[l].in_data_real;
 					//std::cout << "String is: " << c << '\n';
-					if (l == 0)
+					if (l == 0){
 						strcpy(str_fun, c);
+						str_count++;
+					}
 					else if (l == 1)
 					{
 						strcpy(str_pkg, c);
 						pkg = 1;
+						str_count++;
 					}
 					else
 						in(l - str_count) = c;
 
-					str_count++;
 					//std::cout << "String is: " << c << '\n';
 				}
 				else if (inp[l].type == TYPE_STRUCT){
