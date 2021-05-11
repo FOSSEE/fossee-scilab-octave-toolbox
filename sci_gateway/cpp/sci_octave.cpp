@@ -170,7 +170,7 @@ extern "C"
                 for (j = 0; j < dims; j++)
                 {
 					// storing the key
-                    inStruct[j].key = malloc(sizeof(keys[j]) + 1);
+                    inStruct[j].key = malloc(sizeof(wchar_t) * (wcslen(keys[j]) + 1));
 					wcpcpy((wchar_t*) inStruct[j].key, keys[j]);
 
                     struct_out = scilab_getStructMatrix2dData(env, in[i], keys[j], 0, 0); // Retrieving Curr Value
