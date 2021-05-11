@@ -303,6 +303,15 @@ extern "C"
 						idx++;
 					}
 				}
+				else if(out(ii).is_string()){
+					inp[ii].is_out_string = 1;
+
+					octave_value currOut = out(ii);
+					std::string currOutStr = currOut.string_value(); 
+
+					inp[ii].out_data_real = malloc(sizeof(wchar_t) * (currOutStr.length() + 1));
+					mbstowcs((wchar_t *) inp[ii].out_data_real, currOutStr.c_str(), currOutStr.length() + 1);
+				}
 				else
 				{
 					//std::cout << "out "<< ii<< " is NOT complex" << '\n';

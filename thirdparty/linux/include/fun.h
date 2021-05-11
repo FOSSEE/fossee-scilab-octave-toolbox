@@ -42,6 +42,7 @@ extern "C"
 		int n_out_struct_len;	// op struct length
 		int is_in_cmplx;
 		int is_out_cmplx;
+		int is_out_string;
 		int is_out_struct;
 		void* in_data_real;
 		void* in_data_img;

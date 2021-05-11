@@ -367,6 +367,9 @@ extern "C"
 						}
 					}
 				}
+				else if (ins[i].is_out_string == 1){
+					out[i] = scilab_createString(env, (wchar_t *) ins[i].out_data_real);
+				}
 				else
 				{
 					//printf("output %d is NOT complex\n", i);
