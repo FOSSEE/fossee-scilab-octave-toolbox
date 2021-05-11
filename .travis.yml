@@ -10,6 +10,9 @@ addons:
       - build-essential
       - liboctave-dev
       - octave-signal
+      - octave-struct
+      - octave-communications
+      - octave-strings
 
 script:
 - cd $TRAVIS_BUILD_DIR/
