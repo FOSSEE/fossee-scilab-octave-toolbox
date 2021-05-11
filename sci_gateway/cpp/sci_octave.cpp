@@ -347,7 +347,7 @@ extern "C"
 							scilab_setStructMatrix2dData(env, out[i], (const wchar_t*) outStruct[j].key, 0, 0, currValue);
 						}
 						else if (outStruct[j].type == TYPE_DOUBLE){
-							currValue = scilab_createDoubleMatrix2d(env, outStruct[j].rows, outStruct[j].cols, 1);
+							currValue = scilab_createDoubleMatrix2d(env, outStruct[j].rows, outStruct[j].cols, 0);
 							
 							double *outReal = NULL;
 							scilab_getDoubleArray(env, currValue, &outReal);
