@@ -3,10 +3,12 @@
 \doxysubsection*{Classes}
 \begin{DoxyCompactItemize}
 \item 
+struct \mbox{\hyperlink{struct_f_u_n_c_s_t_r_u_c_t}{FUNCSTRUCT}}
+\begin{DoxyCompactList}\small\item\em Struct used to pass structs to Octave from the fun library. \end{DoxyCompactList}\item 
 struct \mbox{\hyperlink{struct_f_u_n_c_a_r_g_s}{FUNCARGS}}
-\item 
+\begin{DoxyCompactList}\small\item\em Struct used to send/receive Scilab data to/from the gateway to \mbox{\hyperlink{fun_8cpp}{fun.\+cpp}} API. \end{DoxyCompactList}\item 
 struct \mbox{\hyperlink{struct_f_u_n_c_c_a_l_l}{FUNCCALL}}
-\end{DoxyCompactItemize}
+\begin{DoxyCompactList}\small\item\em Struct used to call and pass the data to \mbox{\hyperlink{fun_8cpp}{fun.\+cpp}} API. \end{DoxyCompactList}\end{DoxyCompactItemize}
 \doxysubsection*{Macros}
 \begin{DoxyCompactItemize}
 \item 
@@ -15,10 +17,16 @@ struct \mbox{\hyperlink{struct_f_u_n_c_c_a_l_l}{FUNCCALL}}
 \doxysubsection*{Enumerations}
 \begin{DoxyCompactItemize}
 \item 
-enum \mbox{\hyperlink{thirdparty_2linux_2include_2fun_8h_a160793ea95e0b5106580229a2a5f1134}{FUNCTYPE}} \{ \mbox{\hyperlink{src_2fun_8h_a160793ea95e0b5106580229a2a5f1134a019d94f7c571e36215cc1a41e825de0c}{TYPE\+\_\+\+DOUBLE}}
+enum \mbox{\hyperlink{thirdparty_2linux_2include_2fun_8h_a160793ea95e0b5106580229a2a5f1134}{FUNCTYPE}} \{ \newline
+\mbox{\hyperlink{src_2fun_8h_a160793ea95e0b5106580229a2a5f1134a019d94f7c571e36215cc1a41e825de0c}{TYPE\+\_\+\+DOUBLE}}
+, \mbox{\hyperlink{src_2fun_8h_a160793ea95e0b5106580229a2a5f1134a93b716b9a66d34b56d36773e5337f3dc}{TYPE\+\_\+\+COMPLEX}}
 , \mbox{\hyperlink{src_2fun_8h_a160793ea95e0b5106580229a2a5f1134addb4be6b1cc25112defabef75f73427a}{TYPE\+\_\+\+STRING}}
-, \mbox{\hyperlink{thirdparty_2linux_2include_2fun_8h_a160793ea95e0b5106580229a2a5f1134a019d94f7c571e36215cc1a41e825de0c}{TYPE\+\_\+\+DOUBLE}}
+, \mbox{\hyperlink{src_2fun_8h_a160793ea95e0b5106580229a2a5f1134a9001cd1bc103bb1d664228d46715f65c}{TYPE\+\_\+\+STRUCT}}
+, \newline
+\mbox{\hyperlink{thirdparty_2linux_2include_2fun_8h_a160793ea95e0b5106580229a2a5f1134a019d94f7c571e36215cc1a41e825de0c}{TYPE\+\_\+\+DOUBLE}}
+, \mbox{\hyperlink{thirdparty_2linux_2include_2fun_8h_a160793ea95e0b5106580229a2a5f1134a93b716b9a66d34b56d36773e5337f3dc}{TYPE\+\_\+\+COMPLEX}}
 , \mbox{\hyperlink{thirdparty_2linux_2include_2fun_8h_a160793ea95e0b5106580229a2a5f1134addb4be6b1cc25112defabef75f73427a}{TYPE\+\_\+\+STRING}}
+, \mbox{\hyperlink{thirdparty_2linux_2include_2fun_8h_a160793ea95e0b5106580229a2a5f1134a9001cd1bc103bb1d664228d46715f65c}{TYPE\+\_\+\+STRUCT}}
  \}
 \end{DoxyCompactItemize}
 \doxysubsection*{Functions}
@@ -46,19 +54,35 @@ int \mbox{\hyperlink{thirdparty_2linux_2include_2fun_8h_adda0eaf7454844236de5349
 
 \begin{DoxyEnumFields}{Enumerator}
 \raisebox{\heightof{T}}[0pt][0pt]{\index{TYPE\_DOUBLE@{TYPE\_DOUBLE}!fun.h@{fun.h}}\index{fun.h@{fun.h}!TYPE\_DOUBLE@{TYPE\_DOUBLE}}}\mbox{\Hypertarget{thirdparty_2linux_2include_2fun_8h_a160793ea95e0b5106580229a2a5f1134a019d94f7c571e36215cc1a41e825de0c}\label{thirdparty_2linux_2include_2fun_8h_a160793ea95e0b5106580229a2a5f1134a019d94f7c571e36215cc1a41e825de0c}} 
-TYPE\+\_\+\+DOUBLE&\\
+TYPE\+\_\+\+DOUBLE&similar to scilab double \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{TYPE\_COMPLEX@{TYPE\_COMPLEX}!fun.h@{fun.h}}\index{fun.h@{fun.h}!TYPE\_COMPLEX@{TYPE\_COMPLEX}}}\mbox{\Hypertarget{thirdparty_2linux_2include_2fun_8h_a160793ea95e0b5106580229a2a5f1134a93b716b9a66d34b56d36773e5337f3dc}\label{thirdparty_2linux_2include_2fun_8h_a160793ea95e0b5106580229a2a5f1134a93b716b9a66d34b56d36773e5337f3dc}} 
+TYPE\+\_\+\+COMPLEX&similar to scilab complex \\
 \hline
 
 \raisebox{\heightof{T}}[0pt][0pt]{\index{TYPE\_STRING@{TYPE\_STRING}!fun.h@{fun.h}}\index{fun.h@{fun.h}!TYPE\_STRING@{TYPE\_STRING}}}\mbox{\Hypertarget{thirdparty_2linux_2include_2fun_8h_a160793ea95e0b5106580229a2a5f1134addb4be6b1cc25112defabef75f73427a}\label{thirdparty_2linux_2include_2fun_8h_a160793ea95e0b5106580229a2a5f1134addb4be6b1cc25112defabef75f73427a}} 
-TYPE\+\_\+\+STRING&\\
+TYPE\+\_\+\+STRING&similar to scilab string \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{TYPE\_STRUCT@{TYPE\_STRUCT}!fun.h@{fun.h}}\index{fun.h@{fun.h}!TYPE\_STRUCT@{TYPE\_STRUCT}}}\mbox{\Hypertarget{thirdparty_2linux_2include_2fun_8h_a160793ea95e0b5106580229a2a5f1134a9001cd1bc103bb1d664228d46715f65c}\label{thirdparty_2linux_2include_2fun_8h_a160793ea95e0b5106580229a2a5f1134a9001cd1bc103bb1d664228d46715f65c}} 
+TYPE\+\_\+\+STRUCT&similar to scilab struct \\
 \hline
 
 \raisebox{\heightof{T}}[0pt][0pt]{\index{TYPE\_DOUBLE@{TYPE\_DOUBLE}!fun.h@{fun.h}}\index{fun.h@{fun.h}!TYPE\_DOUBLE@{TYPE\_DOUBLE}}}\mbox{\Hypertarget{thirdparty_2linux_2include_2fun_8h_a160793ea95e0b5106580229a2a5f1134a019d94f7c571e36215cc1a41e825de0c}\label{thirdparty_2linux_2include_2fun_8h_a160793ea95e0b5106580229a2a5f1134a019d94f7c571e36215cc1a41e825de0c}} 
 TYPE\+\_\+\+DOUBLE&\\
 \hline
 
+\raisebox{\heightof{T}}[0pt][0pt]{\index{TYPE\_COMPLEX@{TYPE\_COMPLEX}!fun.h@{fun.h}}\index{fun.h@{fun.h}!TYPE\_COMPLEX@{TYPE\_COMPLEX}}}\mbox{\Hypertarget{thirdparty_2linux_2include_2fun_8h_a160793ea95e0b5106580229a2a5f1134a93b716b9a66d34b56d36773e5337f3dc}\label{thirdparty_2linux_2include_2fun_8h_a160793ea95e0b5106580229a2a5f1134a93b716b9a66d34b56d36773e5337f3dc}} 
+TYPE\+\_\+\+COMPLEX&\\
+\hline
+
 \raisebox{\heightof{T}}[0pt][0pt]{\index{TYPE\_STRING@{TYPE\_STRING}!fun.h@{fun.h}}\index{fun.h@{fun.h}!TYPE\_STRING@{TYPE\_STRING}}}\mbox{\Hypertarget{thirdparty_2linux_2include_2fun_8h_a160793ea95e0b5106580229a2a5f1134addb4be6b1cc25112defabef75f73427a}\label{thirdparty_2linux_2include_2fun_8h_a160793ea95e0b5106580229a2a5f1134addb4be6b1cc25112defabef75f73427a}} 
 TYPE\+\_\+\+STRING&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{TYPE\_STRUCT@{TYPE\_STRUCT}!fun.h@{fun.h}}\index{fun.h@{fun.h}!TYPE\_STRUCT@{TYPE\_STRUCT}}}\mbox{\Hypertarget{thirdparty_2linux_2include_2fun_8h_a160793ea95e0b5106580229a2a5f1134a9001cd1bc103bb1d664228d46715f65c}\label{thirdparty_2linux_2include_2fun_8h_a160793ea95e0b5106580229a2a5f1134a9001cd1bc103bb1d664228d46715f65c}} 
+TYPE\+\_\+\+STRUCT&\\
 \hline
 
 \end{DoxyEnumFields}
@@ -74,5 +98,8 @@ TYPE\+\_\+\+STRING&\\
 
 
 Function to Interact with Octave\textquotesingle{}s API. 
+
+API Function to call/receive and pass the data to fun API ~\newline
+
 
 This Function will be communicating with Octave to access it\textquotesingle{}s function. 

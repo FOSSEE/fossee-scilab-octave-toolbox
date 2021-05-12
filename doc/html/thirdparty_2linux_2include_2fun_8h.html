@@ -107,9 +107,14 @@ $(document).ready(function(){initNavTree('thirdparty_2linux_2include_2fun_8h.htm
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
 Classes</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_f_u_n_c_s_t_r_u_c_t.html">FUNCSTRUCT</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Struct used to pass structs to Octave from the fun library.  <a href="struct_f_u_n_c_s_t_r_u_c_t.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_f_u_n_c_a_r_g_s.html">FUNCARGS</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Struct used to send/receive Scilab data to/from the gateway to <a class="el" href="fun_8cpp.html">fun.cpp</a> API.  <a href="struct_f_u_n_c_a_r_g_s.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_f_u_n_c_c_a_l_l.html">FUNCCALL</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Struct used to call and pass the data to <a class="el" href="fun_8cpp.html">fun.cpp</a> API.  <a href="struct_f_u_n_c_c_a_l_l.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
@@ -119,10 +124,17 @@ Macros</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="enum-members"></a>
 Enumerations</h2></td></tr>
-<tr class="memitem:a160793ea95e0b5106580229a2a5f1134"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="thirdparty_2linux_2include_2fun_8h.html#a160793ea95e0b5106580229a2a5f1134">FUNCTYPE</a> { <a class="el" href="src_2fun_8h.html#a160793ea95e0b5106580229a2a5f1134a019d94f7c571e36215cc1a41e825de0c">TYPE_DOUBLE</a>
+<tr class="memitem:a160793ea95e0b5106580229a2a5f1134"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="thirdparty_2linux_2include_2fun_8h.html#a160793ea95e0b5106580229a2a5f1134">FUNCTYPE</a> { <br />
+&#160;&#160;<a class="el" href="src_2fun_8h.html#a160793ea95e0b5106580229a2a5f1134a019d94f7c571e36215cc1a41e825de0c">TYPE_DOUBLE</a>
+, <a class="el" href="src_2fun_8h.html#a160793ea95e0b5106580229a2a5f1134a93b716b9a66d34b56d36773e5337f3dc">TYPE_COMPLEX</a>
 , <a class="el" href="src_2fun_8h.html#a160793ea95e0b5106580229a2a5f1134addb4be6b1cc25112defabef75f73427a">TYPE_STRING</a>
-, <a class="el" href="thirdparty_2linux_2include_2fun_8h.html#a160793ea95e0b5106580229a2a5f1134a019d94f7c571e36215cc1a41e825de0c">TYPE_DOUBLE</a>
+, <a class="el" href="src_2fun_8h.html#a160793ea95e0b5106580229a2a5f1134a9001cd1bc103bb1d664228d46715f65c">TYPE_STRUCT</a>
+, <br />
+&#160;&#160;<a class="el" href="thirdparty_2linux_2include_2fun_8h.html#a160793ea95e0b5106580229a2a5f1134a019d94f7c571e36215cc1a41e825de0c">TYPE_DOUBLE</a>
+, <a class="el" href="thirdparty_2linux_2include_2fun_8h.html#a160793ea95e0b5106580229a2a5f1134a93b716b9a66d34b56d36773e5337f3dc">TYPE_COMPLEX</a>
 , <a class="el" href="thirdparty_2linux_2include_2fun_8h.html#a160793ea95e0b5106580229a2a5f1134addb4be6b1cc25112defabef75f73427a">TYPE_STRING</a>
+, <a class="el" href="thirdparty_2linux_2include_2fun_8h.html#a160793ea95e0b5106580229a2a5f1134a9001cd1bc103bb1d664228d46715f65c">TYPE_STRUCT</a>
+<br />
  }</td></tr>
 <tr class="separator:a160793ea95e0b5106580229a2a5f1134"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
@@ -160,10 +172,18 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <table class="fieldtable">
-<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a160793ea95e0b5106580229a2a5f1134a019d94f7c571e36215cc1a41e825de0c"></a>TYPE_DOUBLE&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="a160793ea95e0b5106580229a2a5f1134addb4be6b1cc25112defabef75f73427a"></a>TYPE_STRING&#160;</td><td class="fielddoc"></td></tr>
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a160793ea95e0b5106580229a2a5f1134a019d94f7c571e36215cc1a41e825de0c"></a>TYPE_DOUBLE&#160;</td><td class="fielddoc"><p>similar to scilab double </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a160793ea95e0b5106580229a2a5f1134a93b716b9a66d34b56d36773e5337f3dc"></a>TYPE_COMPLEX&#160;</td><td class="fielddoc"><p>similar to scilab complex </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a160793ea95e0b5106580229a2a5f1134addb4be6b1cc25112defabef75f73427a"></a>TYPE_STRING&#160;</td><td class="fielddoc"><p>similar to scilab string </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a160793ea95e0b5106580229a2a5f1134a9001cd1bc103bb1d664228d46715f65c"></a>TYPE_STRUCT&#160;</td><td class="fielddoc"><p>similar to scilab struct </p>
+</td></tr>
 <tr><td class="fieldname"><a id="a160793ea95e0b5106580229a2a5f1134a019d94f7c571e36215cc1a41e825de0c"></a>TYPE_DOUBLE&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a160793ea95e0b5106580229a2a5f1134a93b716b9a66d34b56d36773e5337f3dc"></a>TYPE_COMPLEX&#160;</td><td class="fielddoc"></td></tr>
 <tr><td class="fieldname"><a id="a160793ea95e0b5106580229a2a5f1134addb4be6b1cc25112defabef75f73427a"></a>TYPE_STRING&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a160793ea95e0b5106580229a2a5f1134a9001cd1bc103bb1d664228d46715f65c"></a>TYPE_STRUCT&#160;</td><td class="fielddoc"></td></tr>
 </table>
 
 </div>
@@ -196,6 +216,8 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Function to Interact with Octave's API. </p>
+<p>API Function to call/receive and pass the data to fun API <br  />
+</p>
 <p>This Function will be communicating with Octave to access it's function. </p>
 
 </div>

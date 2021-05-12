@@ -1,8 +1,10 @@
 var searchData=
 [
-  ['libscilab_5foctave_15',['libscilab_octave',['../libscilab__octave_8cpp.html#a28af9c33fa0605bbbc3262ce05599088',1,'libscilab_octave(wchar_t *_pwstFuncName):&#160;libscilab_octave.cpp'],['../libscilab__octave_8hxx.html#a3a8eefd11a5b098a0ab25d9804c5e414',1,'libscilab_octave(wchar_t *_pwstFuncName):&#160;libscilab_octave.cpp']]],
-  ['libscilab_5foctave_2ecpp_16',['libscilab_octave.cpp',['../libscilab__octave_8cpp.html',1,'']]],
-  ['libscilab_5foctave_2eh_17',['libscilab_octave.h',['../libscilab__octave_8h.html',1,'']]],
-  ['libscilab_5foctave_2ehxx_18',['libscilab_octave.hxx',['../libscilab__octave_8hxx.html',1,'']]],
-  ['libscilab_5foctave_5fgw_5fimpexp_19',['LIBSCILAB_OCTAVE_GW_IMPEXP',['../libscilab__octave_8hxx.html#a11d06bc89bfdb33bede172eedbd6f551',1,'libscilab_octave.hxx']]]
+  ['in_5fdata_5fimg_15',['in_data_img',['../struct_f_u_n_c_a_r_g_s.html#aeea2f16c973c70f31ac07d234d509161',1,'FUNCARGS']]],
+  ['in_5fdata_5freal_16',['in_data_real',['../struct_f_u_n_c_a_r_g_s.html#afb520ee91cd773811ae5223113c8a82d',1,'FUNCARGS']]],
+  ['in_5fstruct_17',['in_struct',['../struct_f_u_n_c_a_r_g_s.html#aabfc4b5433234d1272a8db4a1531ba79',1,'FUNCARGS']]],
+  ['is_5fin_5fcmplx_18',['is_in_cmplx',['../struct_f_u_n_c_a_r_g_s.html#a6993c7529d472e393bf6d8b62eee4eb9',1,'FUNCARGS']]],
+  ['is_5fout_5fcmplx_19',['is_out_cmplx',['../struct_f_u_n_c_a_r_g_s.html#a25918ade41c7afafb4a851e6845ac554',1,'FUNCARGS']]],
+  ['is_5fout_5fstring_20',['is_out_string',['../struct_f_u_n_c_a_r_g_s.html#a5e7fbc7ebf438985fcc91b800a67240e',1,'FUNCARGS']]],
+  ['is_5fout_5fstruct_21',['is_out_struct',['../struct_f_u_n_c_a_r_g_s.html#a23897aefce90b1a055e408ef209daab6',1,'FUNCARGS']]]
 ];

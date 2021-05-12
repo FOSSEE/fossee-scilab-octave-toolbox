@@ -1,6 +1,5 @@
 var searchData=
 [
-  ['type_35',['type',['../struct_f_u_n_c_a_r_g_s.html#a580ae591432835016133e2ada44be2c9',1,'FUNCARGS']]],
-  ['type_5fdouble_36',['TYPE_DOUBLE',['../src_2fun_8h.html#a160793ea95e0b5106580229a2a5f1134a019d94f7c571e36215cc1a41e825de0c',1,'TYPE_DOUBLE():&#160;fun.h'],['../thirdparty_2linux_2include_2fun_8h.html#a160793ea95e0b5106580229a2a5f1134a019d94f7c571e36215cc1a41e825de0c',1,'TYPE_DOUBLE():&#160;fun.h']]],
-  ['type_5fstring_37',['TYPE_STRING',['../src_2fun_8h.html#a160793ea95e0b5106580229a2a5f1134addb4be6b1cc25112defabef75f73427a',1,'TYPE_STRING():&#160;fun.h'],['../thirdparty_2linux_2include_2fun_8h.html#a160793ea95e0b5106580229a2a5f1134addb4be6b1cc25112defabef75f73427a',1,'TYPE_STRING():&#160;fun.h']]]
+  ['readme_2emd_43',['README.md',['../_r_e_a_d_m_e_8md.html',1,'']]],
+  ['rows_44',['rows',['../struct_f_u_n_c_s_t_r_u_c_t.html#a7512f24fd057d4d93074e9a5c7951157',1,'FUNCSTRUCT']]]
 ];
