@@ -370,6 +370,61 @@ else
 	disp("cheb2ord Test failed")
 end
 
+/////////Test case for       base64encode                 //////////
+
+s = octave_fun("base64encode","strings","Hakuna Matata","true");
+
+if(s == "SGFrdW5hIE1hdGF0YQ==")
+    test_pass=[test_pass,1]
+else
+	test_pass=[test_pass,0]
+	disp("base64encode Test failed")
+end
+
+/////////Test case for       getfields                 //////////
+
+st = struct('double',25.25,'string','c++','complex',4 + 3*%i,'matrix',[1 2 3.56;4 5 6*%i]);
+[od,os,oc,om] = octave_fun("getfields","struct",st,'double','string','complex','matrix');
+
+if(od == 25.25 & os == "c++" & oc == 4 + 3*%i & om == [1 2 3.56;4 5 6*%i])
+	test_pass=[test_pass,1]
+else
+	test_pass=[test_pass,0]
+	disp("getfields Test failed")
+end
+
+/////////Test case for       options                 //////////
+
+opt = octave_fun("options","control","string","c++","double",25.25,"complex",4 + 3*%i,"matrix",[1 2 3.56;4 5 6*%i])
+
+if(opt.string == "c++" & opt.double == 25.25 & opt.complex == 4 + 3*%i & opt.matrix == [1 2 3.56;4 5 6*%i])
+	test_pass=[test_pass,1]
+else
+	test_pass=[test_pass,0]
+	disp("options Test failed")
+end
+
+/////////Test case for       poly2trellis                 //////////
+
+trellis = octave_fun("poly2trellis","communications",[4 3],[4 5 17;7 4 2]);
+
+if(trellis.numInputSymbols == 4)
+	test_pass=[test_pass,1]
+else
+	test_pass=[test_pass,0]
+	disp("poly2trellis Test failed")
+end
+
+/////////Test case for       convenc                 //////////
+
+//code = octave_fun("convenc","communications",ones(100,1),trellis);
+
+//if(size(code) == [150 1])
+//	test_pass=[test_pass,1]
+//else
+//	test_pass=[test_pass,0]
+//	disp("convenc Test failed")
+//end
 /////////////////////////////////////////////
 res=find(test_pass==0)
 

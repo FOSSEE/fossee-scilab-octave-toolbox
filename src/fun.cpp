@@ -101,17 +101,19 @@ extern "C"
 
 					char *c = (char *)inp[l].in_data_real;
 					//std::cout << "String is: " << c << '\n';
-					if (l == 0)
+					if (l == 0){
 						strcpy(str_fun, c);
+						str_count++;
+					}
 					else if (l == 1)
 					{
 						strcpy(str_pkg, c);
 						pkg = 1;
+						str_count++;
 					}
 					else
 						in(l - str_count) = c;
 
-					str_count++;
 					//std::cout << "String is: " << c << '\n';
 				}
 				//check if Input type is struct
@@ -173,7 +175,7 @@ extern "C"
 					in(l - str_count) = inOctaveStruct;
 				}
 			}
-			// Load the octave package 
+
 			if (pkg == 1)
 			{
 				//std::cout << "loading package " << str_pkg << '\n';
@@ -307,7 +309,15 @@ extern "C"
 						idx++;
 					}
 				}
-				// Format Matrix data
+				else if(out(ii).is_string()){
+					inp[ii].is_out_string = 1;
+
+					octave_value currOut = out(ii);
+					std::string currOutStr = currOut.string_value(); 
+
+					inp[ii].out_data_real = malloc(sizeof(wchar_t) * (currOutStr.length() + 1));
+					mbstowcs((wchar_t *) inp[ii].out_data_real, currOutStr.c_str(), currOutStr.length() + 1);
+				}
 				else
 				{
 					//std::cout << "out "<< ii<< " is NOT complex" << '\n';

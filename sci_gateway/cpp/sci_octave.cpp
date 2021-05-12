@@ -142,6 +142,7 @@ extern "C"
 						}
 					}
 				}
+				/////////////////////////////////////////
 			}
 			// Check if [in] of type SCI:Matrix of strings
 			else if (scilab_getType(env, in[i]) == 10)
@@ -170,35 +171,34 @@ extern "C"
 					//printf("in scilab strin is: %s\n", c);
 				}
 			}
-			// Check if  [in] of type Sci:struct
-			else if (scilab_getType(env, in[i]) == 18) 
-			{
+			else if (scilab_getType(env, in[i]) == 18) //Checking for Struct input
+            {
 				ins[i].type = TYPE_STRUCT;
-				wchar_t **keys = NULL;
-				scilabVar struct_out;
-				int dims = 0;
-
-				dims = scilab_getFields(env, in[i], &keys); // Retrieving Struct Keys
+                wchar_t** keys = NULL;
+                scilabVar struct_out;       
+				int dims = 0;      
+                                
+                dims = scilab_getFields(env, in[i], &keys); // Retrieving Struct Keys
 				ins[i].n_in_struct_len = dims;
 				//std::cout<<dims<<std::endl;
-
+				
 				// allocating memory for keys and values
-				ins[i].in_struct = (FUNCSTRUCT *)malloc(sizeof(FUNCSTRUCT) * dims);
-				FUNCSTRUCT *inStruct = ins[i].in_struct;
-
-				for (j = 0; j < dims; j++)
-				{
+				ins[i].in_struct = (FUNCSTRUCT*) malloc(sizeof(FUNCSTRUCT) * dims);
+				FUNCSTRUCT* inStruct = ins[i].in_struct;
+				                 
+                for (j = 0; j < dims; j++)
+                {
 					// storing the key
-					inStruct[j].key = malloc(sizeof(keys[j]) + 1);
-					wcpcpy((wchar_t *)inStruct[j].key, keys[j]);
+                    inStruct[j].key = malloc(sizeof(wchar_t) * (wcslen(keys[j]) + 1));
+					wcpcpy((wchar_t*) inStruct[j].key, keys[j]);
 
-					struct_out = scilab_getStructMatrix2dData(env, in[i], keys[j], 0, 0); // Retrieving Curr Value
+                    struct_out = scilab_getStructMatrix2dData(env, in[i], keys[j], 0, 0); // Retrieving Curr Value
 
-					// Checking Type of value in struct
-					if (scilab_getType(env, struct_out) == 1)
+                    // Checking Type of value in struct
+					if (scilab_getType(env,struct_out) == 1) 
 					{
 						// Double Value
-						if (scilab_isComplex(env, struct_out) == 1)
+						if (scilab_isComplex(env,struct_out) == 1)
 						{
 							// Complex Value
 							//printf("input %d is complex \n", i)
@@ -210,8 +210,8 @@ extern "C"
 
 							inStruct[j].dataReal = malloc(sizeof(double) * size);
 							inStruct[j].dataImg = malloc(sizeof(double) * size);
-							rd = (double *)inStruct[j].dataReal;
-							cd = (double *)inStruct[j].dataImg;
+							rd = (double *) inStruct[j].dataReal;
+							cd = (double *) inStruct[j].dataImg;
 
 							////This code snippet is to flatten matrix row wise and then store it
 							int p, q, k = 0;
@@ -239,7 +239,7 @@ extern "C"
 							inStruct[j].cols = col;
 
 							inStruct[j].dataReal = malloc(sizeof(double) * size);
-							d = (double *)inStruct[j].dataReal;
+							d = (double *) inStruct[j].dataReal;
 
 							////This code snippet is to flatten matrix row wise and then store it
 							int p, q, k = 0;
@@ -249,12 +249,12 @@ extern "C"
 								{
 									// printf("%f\n",n[k]);
 									d[k] = n[k];
-									k++;
+									k++;	
 								}
 							}
 						}
 					}
-					else if (scilab_getType(env, struct_out) == 10)
+					else if (scilab_getType(env,struct_out) == 10)
 					{
 						inStruct[j].type = TYPE_STRING;
 						wchar_t *in1 = NULL;
@@ -263,7 +263,7 @@ extern "C"
 						//printf("%S\n", in1);
 
 						inStruct[j].str = malloc(sizeof(wchar_t) * (wcslen(in1) + 1));
-						wcpcpy((wchar_t *)inStruct[j].str, in1);
+						wcpcpy((wchar_t*) inStruct[j].str, in1);
 						// printf("%s\n", str);
 					}
 					else
@@ -272,7 +272,7 @@ extern "C"
 						return STATUS_ERROR;
 					}
 				}
-			}
+            }
 			else
 			{
 				Scierror(999, _("%s: Wrong type of input argument %d.\n"), fname, i);
@@ -357,47 +357,44 @@ extern "C"
 							double *outImg = NULL;
 							scilab_getDoubleComplexArray(env, currValue, &outReal, &outImg);
 
-							double *dReal = (double *)outStruct[j].dataReal;
-							double *dImg = (double *)outStruct[j].dataImg;
+							double* dReal = (double *) outStruct[j].dataReal;
+							double* dImg = (double *) outStruct[j].dataImg;
 
 							int size = outStruct[j].rows * outStruct[j].cols;
-							for (int k = 0; k < size; k++)
-							{
+							for(int k = 0; k < size; k++){
 								outReal[k] = dReal[k];
 							}
-							for (int k = 0; k < size; k++)
-							{
+							for(int k = 0; k < size; k++){
 								outImg[k] = dImg[k];
 							}
 
 							// set the key-value pair in scilab struct
-							scilab_setStructMatrix2dData(env, out[i], (const wchar_t *)outStruct[j].key, 0, 0, currValue);
+							scilab_setStructMatrix2dData(env, out[i], (const wchar_t*) outStruct[j].key, 0, 0, currValue);
 						}
-						else if (outStruct[j].type == TYPE_DOUBLE)
-						{
-							currValue = scilab_createDoubleMatrix2d(env, outStruct[j].rows, outStruct[j].cols, 1);
-
+						else if (outStruct[j].type == TYPE_DOUBLE){
+							currValue = scilab_createDoubleMatrix2d(env, outStruct[j].rows, outStruct[j].cols, 0);
+							
 							double *outReal = NULL;
 							scilab_getDoubleArray(env, currValue, &outReal);
 
-							double *dReal = (double *)outStruct[j].dataReal;
-
+							double* dReal = (double *) outStruct[j].dataReal;
+							
 							int size = outStruct[j].rows * outStruct[j].cols;
-							for (int k = 0; k < size; k++)
-							{
+							for(int k = 0; k < size; k++){
 								outReal[k] = dReal[k];
 							}
 
 							// set the key-value pair in scilab struct
-							scilab_setStructMatrix2dData(env, out[i], (const wchar_t *)outStruct[j].key, 0, 0, currValue);
+							scilab_setStructMatrix2dData(env, out[i], (const wchar_t*) outStruct[j].key, 0, 0, currValue);
 						}
-						else if (outStruct[j].type == TYPE_STRING)
-						{
-							scilab_setStructMatrix2dData(env, out[i], (const wchar_t *)outStruct[j].key, 0, 0, scilab_createString(env, (const wchar_t *)outStruct[j].str));
+						else if (outStruct[j].type == TYPE_STRING){
+							scilab_setStructMatrix2dData(env, out[i], (const wchar_t*) outStruct[j].key, 0, 0, scilab_createString(env, (const wchar_t*) outStruct[j].str));
 						}
 					}
 				}
-				// Format Double data type
+				else if (ins[i].is_out_string == 1){
+					out[i] = scilab_createString(env, (wchar_t *) ins[i].out_data_real);
+				}
 				else
 				{
 					//printf("output %d is NOT complex\n", i);
@@ -433,64 +430,51 @@ extern "C"
 					// std::string(tempWStr.begin(), tempWStr.end());
 					// std::cout << "freeing key: " << std::string(tempWStr.begin(), tempWStr.end()) << std::endl;
 					free(tempStruct[j].key);
-					if (tempStruct[j].type == TYPE_STRING)
-					{
+					if (tempStruct[j].type == TYPE_STRING){
 						free(tempStruct[j].str);
 					}
-					if (tempStruct[j].type == TYPE_DOUBLE)
-					{
+					if (tempStruct[j].type == TYPE_DOUBLE){
 						free(tempStruct[j].dataReal);
 					}
-					if (tempStruct[j].type == TYPE_COMPLEX)
-					{
+					if (tempStruct[j].type == TYPE_COMPLEX){
 						free(tempStruct[j].dataReal);
 						free(tempStruct[j].dataImg);
 					}
 				}
 				free(ins[i].out_struct);
 			}
-			else
-			{
+			else{
 				free(ins[i].out_data_real);
 			}
 
-			if (ins[i].is_out_cmplx == 1)
-			{
+			if (ins[i].is_out_cmplx == 1){
 				free(ins[i].out_data_img);
 			}
 		}
-		// Free the mem allocated for in variables
 		for (i = 0; i < nin; i++)
 		{
-			if (ins[i].type == TYPE_STRUCT)
-			{
-				FUNCSTRUCT *tempStruct = ins[i].in_struct;
-				for (int j = 0; j < ins[i].n_in_struct_len; j++)
-				{
+			if(ins[i].type == TYPE_STRUCT){
+				FUNCSTRUCT* tempStruct = ins[i].in_struct;
+				for (int j = 0; j < ins[i].n_in_struct_len; j++){
 					free(tempStruct[j].key);
-					if (tempStruct[j].type == TYPE_STRING)
-					{
+					if (tempStruct[j].type == TYPE_STRING){
 						free(tempStruct[j].str);
 					}
-					if (tempStruct[j].type == TYPE_DOUBLE)
-					{
+					if (tempStruct[j].type == TYPE_DOUBLE){
 						free(tempStruct[j].dataReal);
 					}
-					if (tempStruct[j].type == TYPE_COMPLEX)
-					{
+					if (tempStruct[j].type == TYPE_COMPLEX){
 						free(tempStruct[j].dataReal);
 						free(tempStruct[j].dataImg);
 					}
 				}
 				free(ins[i].in_struct);
 			}
-			else
-			{
+			else{
 				free(ins[i].in_data_real);
 			}
 
-			if (ins[i].is_in_cmplx == 1)
-			{
+			if (ins[i].is_in_cmplx == 1){
 				free(ins[i].in_data_img);
 			}
 		}
