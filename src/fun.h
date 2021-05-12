@@ -55,7 +55,7 @@ extern "C"
 		int n_in_cols;			/**< Input cols dimension of data*/
 		int n_in_struct_len; 	/**< input struct length*/
 		int n_out_rows;			/**< Ouput rows dimension of data*/
-		int n_out_cols;			/**< Output cold dimension of data*/
+		int n_out_cols;			/**< Output cols dimension of data*/
 		int n_out_struct_len;	/**< Output struct length*/
 		int is_in_cmplx;		/**< Input is a Complex data type*/
 		int is_out_cmplx;		/**< Output is a Complex data type*/
@@ -76,8 +76,8 @@ extern "C"
 	typedef struct {
 		/*@{*/
 		int n_in_arguments;		/**< Number of input arguments*/
-		int n_out_arguments;	/**< Number of output arguments*/
-		int n_out_user;			/**< Number of output arguements expected to be returned */
+		int n_out_arguments;	/**< Number of output arguements in Scilab*/
+		int n_out_user;			/**< Number of output arguements expected to be returned from Octave */
 		char *err; 				/**< Return errors*/
 		//char *package; 		//Name of octave package to be loaded*/
 		FUNCARGS *argument;		/**< Struct defining and containing the data*/
