@@ -159,7 +159,10 @@ extern "C"
                 scilabVar struct_out;       
 				int dims = 0;      
                                 
-                dims = scilab_getFields(env, in[i], &keys); // Retrieving Struct Keys
+				// call getfields only when struct is not empty else getfields will crash
+				if(scilab_isEmpty(env, in[i]) != 1){
+					dims = scilab_getFields(env, in[i], &keys); // Retrieving Struct Keys
+				}
 				ins[i].n_in_struct_len = dims;
 				//std::cout<<dims<<std::endl;
 				
