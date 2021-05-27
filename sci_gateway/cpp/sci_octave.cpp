@@ -368,6 +368,10 @@ extern "C"
 						else if (outStruct[j].type == TYPE_STRING){
 							scilab_setStructMatrix2dData(env, out[i], (const wchar_t*) outStruct[j].key, 0, 0, scilab_createString(env, (const wchar_t*) outStruct[j].str));
 						}
+						else{
+							Scierror(999, _("%s: Unsupported type of output argument in struct %d for key \"%ls\".\n"), fname, i, (const wchar_t*) outStruct[i].key);
+							return STATUS_ERROR;
+						}
 					}
 				}
 				else if (ins[i].is_out_string == 1){
