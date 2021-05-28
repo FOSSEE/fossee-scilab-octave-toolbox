@@ -15,35 +15,51 @@
 extern "C"
 {
 
-	typedef enum
-	{
+	typedef enum {
 		TYPE_DOUBLE,
+		TYPE_COMPLEX,
 		TYPE_STRING,
+		TYPE_STRUCT,
 	}FUNCTYPE;
 
-	typedef struct
-	{
+	typedef struct {
+		FUNCTYPE type;		// type of value in struct's field
+		void* key;			// key of struct field
+		int rows;			// rows dimension of struct field's value
+		int cols;			// cols dimension of struct fields' value
+		void* dataReal;		// Real data if struct field's value is real
+		void* dataImg;		// Img data if struct field's value is complex
+		void* str;			// string data if struct field's value is string
+	} FUNCSTRUCT;
+
+	typedef struct {
 		FUNCTYPE type;
 		int n_in_rows;
 		int n_in_cols;
+		int n_in_struct_len; 	// ip struct length
 		int n_out_rows;
 		int n_out_cols;
+		int n_out_struct_len;	// op struct length
 		int is_in_cmplx;
 		int is_out_cmplx;
+		int is_out_string;
+		int is_out_struct;
 		void* in_data_real;
 		void* in_data_img;
 		void* out_data_real;
 		void* out_data_img;
-	}FUNCARGS;
-	
+		FUNCSTRUCT* in_struct;
+		FUNCSTRUCT* out_struct;
+	} FUNCARGS;
+
 	typedef struct {
-	int n_in_arguments; // number of input arguments
-	int n_out_arguments; // number of output arguments
-	int n_out_user; // number of output arguments
-	char *err; // Name
-	//char *package; //Name of octave package to be loaded
-	FUNCARGS *argument;
-} FUNCCALL;
+		int n_in_arguments;		// number of input arguments
+		int n_out_arguments;	// number of output arguments
+		int n_out_user;			// number of output arguments
+		char *err; 				// Name
+		//char *package; 		//Name of octave package to be loaded
+		FUNCARGS *argument;
+	} FUNCCALL;
 
 	int fun(FUNCARGS *arr, FUNCCALL *call);
 }

@@ -1,0 +1,37 @@
+This is a scilab toolbox to call octave functions. It requires octave to be installed on the system.\hypertarget{md__r_e_a_d_m_e_autotoc_md1}{}\doxysection{This toolbox has been built and tested using}\label{md__r_e_a_d_m_e_autotoc_md1}
+
+\begin{DoxyEnumerate}
+\item {\ttfamily OS -\/ Linux Debian 10, Ubuntu 18.\+10 and 19.\+10 (64-\/bit)}
+\item {\ttfamily Octave -\/ Version 4.\+4.\+1, 5.\+1.\+0}
+\item {\ttfamily Scilab -\/ Version 6.\+0.\+x}
+\end{DoxyEnumerate}\hypertarget{md__r_e_a_d_m_e_autotoc_md2}{}\doxysection{Software prerequisites\+:}\label{md__r_e_a_d_m_e_autotoc_md2}
+Run the following commands in the linux terminal
+\begin{DoxyEnumerate}
+\item {\ttfamily sudo apt-\/get install build-\/essential ($\sim$117 MB download)}
+\item {\ttfamily sudo apt-\/get install liboctave-\/dev ($\sim$103 MB download)}
+\item {\ttfamily sudo apt-\/get install octave}
+\item {\ttfamily sudo apt-\/get install scilab}
+\end{DoxyEnumerate}\hypertarget{md__r_e_a_d_m_e_autotoc_md3}{}\doxysection{Install the required octave packages using the below command in linux terminal}\label{md__r_e_a_d_m_e_autotoc_md3}
+
+\begin{DoxyEnumerate}
+\item {\ttfamily sudo apt-\/get install octave-\/$<$pkg name$>$} For example, to install signal package in octave, do
+\end{DoxyEnumerate}
+\begin{DoxyEnumerate}
+\item {\ttfamily sudo apt-\/get install octave-\/signal}
+\end{DoxyEnumerate}\hypertarget{md__r_e_a_d_m_e_autotoc_md4}{}\doxysection{Launch Scilab and run the following commands inside the scilab console}\label{md__r_e_a_d_m_e_autotoc_md4}
+
+\begin{DoxyEnumerate}
+\item {\ttfamily cd $<$path to fossee-\/scilab-\/octave-\/toolbox directory$>$}
+\item {\ttfamily exec builder.\+sce}
+\item {\ttfamily exec loader.\+sce}
+\item {\ttfamily help octave\+\_\+fun} (then execute the examples appearing on the help page to test the toolbox)
+\end{DoxyEnumerate}\hypertarget{md__r_e_a_d_m_e_autotoc_md5}{}\doxysection{Building the source}\label{md__r_e_a_d_m_e_autotoc_md5}
+In case if executing the builder and loader files in scilab throw an error regarding .so files, you probably need to build the toolbox from source. Do the following on the linux terminal
+\begin{DoxyEnumerate}
+\item Download the fossee-\/scilab-\/octave-\/toolbox source from \href{https://atoms.scilab.org}{\texttt{ {\ttfamily atoms.\+scilab.\+org}}}
+\item Close scilab, if running
+\item {\ttfamily cd $<$path to fossee-\/scilab-\/octave-\/toolbox/src/ directory$>$}
+\item {\ttfamily make clean}
+\item {\ttfamily make}
+\item {\ttfamily make install} 
+\end{DoxyEnumerate}
