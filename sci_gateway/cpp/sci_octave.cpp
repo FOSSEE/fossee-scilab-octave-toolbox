@@ -178,7 +178,10 @@ extern "C"
                 scilabVar struct_out;       
 				int dims = 0;      
                                 
-                dims = scilab_getFields(env, in[i], &keys); // Retrieving Struct Keys
+				// call getfields only when struct is not empty else getfields will crash
+				if(scilab_isEmpty(env, in[i]) != 1){
+					dims = scilab_getFields(env, in[i], &keys); // Retrieving Struct Keys
+				}
 				ins[i].n_in_struct_len = dims;
 				//std::cout<<dims<<std::endl;
 				
@@ -389,6 +392,10 @@ extern "C"
 						}
 						else if (outStruct[j].type == TYPE_STRING){
 							scilab_setStructMatrix2dData(env, out[i], (const wchar_t*) outStruct[j].key, 0, 0, scilab_createString(env, (const wchar_t*) outStruct[j].str));
+						}
+						else{
+							Scierror(999, _("%s: Unsupported type of output argument in struct %d for key \"%ls\".\n"), fname, i, (const wchar_t*) outStruct[i].key);
+							return STATUS_ERROR;
 						}
 					}
 				}

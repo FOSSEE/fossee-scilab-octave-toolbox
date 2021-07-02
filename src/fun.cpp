@@ -281,7 +281,7 @@ extern "C"
 							outStruct[j].str = malloc(sizeof(wchar_t) * (currValueStr.length() + 1));
 							mbstowcs((wchar_t*) outStruct[j].str, currValueStr.c_str(), currValueStr.length() + 1);
 						}
-						else {
+						else if (currValue.is_double_type()){
 							outStruct[j].type = TYPE_DOUBLE;
 							
 							Matrix currValueMatrix(currValue.matrix_value());

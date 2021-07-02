@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE book [
 <!--Begin Entities-->
-<!ENTITY a6cc3dc89e25a63d5d5def95b52cbd1c1 SYSTEM "/home/shagun/Desktop/fossee-scilab-octave-toolbox_2/help/en_US/octave_fun.xml">
+<!ENTITY ac91b127f3650008b133aa7f9a6245451 SYSTEM "/home/detailer/Downloads/Task2/fossee-scilab-octave-toolbox/help/en_US/octave_fun.xml">
 <!--End Entities-->
 ]>
 <book version="5.0-subset Scilab" xml:lang="en_US"
@@ -16,8 +16,8 @@
     <title>scilab_octave</title>
   </info>
 
-<part xml:id='section_328782206fa125cbdc0430b054fffa2f'>
+<part xml:id='section_5e7519fee5718c0930fe5ef6701da2b8'>
 <title>scilab_octave</title>
-&a6cc3dc89e25a63d5d5def95b52cbd1c1;
+&ac91b127f3650008b133aa7f9a6245451;
 </part>
 </book>
