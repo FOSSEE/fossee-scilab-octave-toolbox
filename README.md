@@ -25,7 +25,7 @@ Install the required octave packages using the below command in linux terminal
 1. Download and Install Scilab 6.0.1 x64 from [Scilab.org](https://www.scilab.org/) 
 2. Download and Install Octave 4.4.1 x64. (If you use a custom installation path different from the default see troubleshooting section below.)
 3. Install Mingw Tollbox for Scilab (https://atoms.scilab.org/toolboxes/mingw/0.10.5).
-4. Create an user variable called `'OCTAVE_HOME'` with value equal to the installation directory of Octave (default being: `"C:\Octave\Octave-4.4.1\"`). 
+4. Create an user variable called `'OCTAVE_HOME'` **with** value equal to the installation directory of Octave (default being: `"C:\Octave\Octave-4.4.1\"`). 
 
 ---
 
@@ -48,7 +48,7 @@ Launch Scilab and run the following commands inside the scilab console
    
 ---
 
-## Building the source
+## Building from source
 
 ## Linux
 In case if executing the builder and loader files in scilab throw an error regarding .so files, you probably need to build the toolbox from source. Do the following on the linux terminal
