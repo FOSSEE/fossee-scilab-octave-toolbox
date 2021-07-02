@@ -193,7 +193,7 @@ extern "C"
                 {
 					// storing the key
                     inStruct[j].key = malloc(sizeof(wchar_t) * (wcslen(keys[j]) + 1));
-					wcpcpy((wchar_t*) inStruct[j].key, keys[j]);
+					wcscpy((wchar_t*) inStruct[j].key, keys[j]);
 
                     struct_out = scilab_getStructMatrix2dData(env, in[i], keys[j], 0, 0); // Retrieving Curr Value
 
@@ -266,7 +266,7 @@ extern "C"
 						//printf("%S\n", in1);
 
 						inStruct[j].str = malloc(sizeof(wchar_t) * (wcslen(in1) + 1));
-						wcpcpy((wchar_t*) inStruct[j].str, in1);
+						wcscpy((wchar_t*) inStruct[j].str, in1);
 						// printf("%s\n", str);
 					}
 					else

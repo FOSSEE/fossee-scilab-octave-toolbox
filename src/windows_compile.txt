@@ -1,0 +1,2 @@
+mkoctfile -c -fPIC fun.cpp
+g++ -L C:\Octave\Octave-4.4.1\bin -loctave-6 -loctinterp-6 -shared -o libfun.dll fun.o -Wl,--out-implib,libfun.a
