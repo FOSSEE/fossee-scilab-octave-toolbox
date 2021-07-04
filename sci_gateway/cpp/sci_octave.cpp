@@ -29,28 +29,39 @@ extern "C"
 #include <stdlib.h>
 
 	static const char fname[] = "octave_fun";
-	
-	/*! \brief Function to connect to Scilab's API.
-	* 
-	* This function will get Data from Scilab, proccess the data
-	* in Octave then return the output back to Scilab using the 
-	* API.
-	*/
+
+	/**
+	 * @brief Function to connect to Scilab's API.
+	 * 
+	 *	This function will get Data from Scilab, proccess the data
+	 *	in Octave then return the output back to Scilab using the 
+	 *	API.
+	 * 
+	 * @param env Scialb env
+	 * @param nin[in] Number of input arguments
+	 * @param in[in] Input Parameters
+	 * @param nopt[in] Number of optional parameters
+	 * @param opt[in] Optional parameters
+	 * @param nout[out] Number of expected output parametets
+	 * @param out[out] Array for output data
+	 * @return int 
+	 */
 	int sci_octave_fun(scilabEnv env, int nin, scilabVar *in, int nopt, scilabOpt *opt, int nout, scilabVar *out)
 
 	{
-		//printf("nin: %d\n", nin);
+		//DEBUG//printf("nin: %d\n", nin);
+		// Check number of inputs
 		if (nin < 1)
 		{
 			Scierror(999, _("%s: Wrong number of input arguments. Atleast %d expected.\n"), fname, 2);
 			return STATUS_ERROR;
 		}
 
+		// Declare and initialize the API variables
 		FUNCCALL funcall;
 		FUNCCALL *funptr = &funcall;
 		funcall.n_in_arguments = nin;
 		funcall.n_out_user = nout;
-
 		FUNCARGS ins[funcall.n_in_arguments * nout];
 		FUNCARGS *argptr = ins;
 
@@ -67,14 +78,20 @@ extern "C"
 		double *in_real;
 		double *in_img;
 
+
+
+		// Check the data type of input variables and format them into the FUNNCALL
 		for (i = 0; i < nin; i++)
 		{
+			// Check if [in] of type Sci:matrix
 			if (scilab_getType(env, in[i]) == 1)
 			{
 				ins[i].type = TYPE_DOUBLE;
+
+				// Check if [in] is of type Sci:complex
 				if (scilab_isComplex(env, in[i]) == 1)
 				{
-					//printf("input %d is complex \n", i);
+					//DEBUG//printf("input %d is complex \n", i);
 					ins[i].is_in_cmplx = 1;
 					size = scilab_getDim2d(env, in[i], &row, &col);
 					ins[i].n_in_rows = row;
@@ -100,9 +117,10 @@ extern "C"
 						}
 					}
 				}
+				// [in] is not of type Sci:complex
 				else
 				{
-					//printf("input %d is NOT complex \n", i);
+					//DEBUG//printf("input %d is NOT complex \n", i);
 					ins[i].is_in_cmplx = 0;
 					size = scilab_getDim2d(env, in[i], &row, &col);
 					ins[i].n_in_rows = row;
@@ -112,7 +130,7 @@ extern "C"
 					ins[i].in_data_real = malloc(sizeof(double) * size);
 					d = (double *)ins[i].in_data_real;
 
-					////This code snippet is to flatten matrix row wise and then store it
+					//DEBUG//This code snippet is to flatten matrix row wise and then store it
 					int p, q, k = 0;
 					for (p = 0; p < row; p++)
 					{
@@ -126,6 +144,7 @@ extern "C"
 				}
 				/////////////////////////////////////////
 			}
+			// Check if [in] of type SCI:Matrix of strings
 			else if (scilab_getType(env, in[i]) == 10)
 			{
 				ins[i].is_in_cmplx = 0;
@@ -174,7 +193,7 @@ extern "C"
                 {
 					// storing the key
                     inStruct[j].key = malloc(sizeof(wchar_t) * (wcslen(keys[j]) + 1));
-					wcpcpy((wchar_t*) inStruct[j].key, keys[j]);
+					wcscpy((wchar_t*) inStruct[j].key, keys[j]);
 
                     struct_out = scilab_getStructMatrix2dData(env, in[i], keys[j], 0, 0); // Retrieving Curr Value
 
@@ -247,7 +266,7 @@ extern "C"
 						//printf("%S\n", in1);
 
 						inStruct[j].str = malloc(sizeof(wchar_t) * (wcslen(in1) + 1));
-						wcpcpy((wchar_t*) inStruct[j].str, in1);
+						wcscpy((wchar_t*) inStruct[j].str, in1);
 						// printf("%s\n", str);
 					}
 					else
@@ -279,7 +298,7 @@ extern "C"
 		if (!err.empty() && status_fun == 0)
 			sciprint("Warning from Octave\n%s", err.c_str());
 		buffer_err.str("");
-		
+
 		//printf("in scilab status_fun is: %d\n", status_fun);
 		//printf("in scilab funcall.n_out_arguments is: %d\n", funcall.n_out_arguments);
 		//printf("in scilab funcall.n_out_user is: %d\n", funcall.n_out_user);
@@ -292,10 +311,12 @@ extern "C"
 			Scierror(999, "Error from Octave\n%s", err.c_str());
 			return 1;
 		}
+		// Format output variable for SciLab
 		else if (funcall.n_out_user <= funcall.n_out_arguments)
 		{
 			for (i = 0; i < nout; i++)
 			{
+				// Format Complex data type
 				if (ins[i].is_out_cmplx == 1)
 				{
 					//printf("output %d is complex\n", i);
@@ -317,20 +338,24 @@ extern "C"
 						out_img[j] = ocd[j];
 					}
 				}
-				else if (ins[i].is_out_struct == 1){
+				// Format Struct data type
+				else if (ins[i].is_out_struct == 1)
+				{
 					// creating scilab struct
 					out[i] = scilab_createStruct(env);
 					int structLen = ins[i].n_out_struct_len;
-					
-					FUNCSTRUCT* outStruct = ins[i].out_struct;
 
-					for (int j = 0; j < structLen; j++){
+					FUNCSTRUCT *outStruct = ins[i].out_struct;
+
+					for (int j = 0; j < structLen; j++)
+					{
 						// std::printf("currKey in sciOctave.cpp OP: %ls\n", outStruct[j].key);
-						scilab_addField(env, out[i], (const wchar_t*) outStruct[j].key);
+						scilab_addField(env, out[i], (const wchar_t *)outStruct[j].key);
 						scilabVar currValue = NULL;
-						if (outStruct[j].type == TYPE_COMPLEX){
+						if (outStruct[j].type == TYPE_COMPLEX)
+						{
 							currValue = scilab_createDoubleMatrix2d(env, outStruct[j].rows, outStruct[j].cols, 1);
-							
+
 							double *outReal = NULL;
 							double *outImg = NULL;
 							scilab_getDoubleComplexArray(env, currValue, &outReal, &outImg);
@@ -398,11 +423,16 @@ extern "C"
 			Scierror(77, _("%s: Wrong number of output arguments: This function can return a maximum of %d output(s).\n"), fname, funcall.n_out_arguments);
 			return 1;
 		}
+
+		// Free the mem allocated for out variables
 		for (i = 0; i < nout; i++)
 		{
-			if (ins[i].is_out_struct == 1){
-				FUNCSTRUCT* tempStruct = ins[i].out_struct;
-				for (int j = 0; j < ins[i].n_out_struct_len; j++){
+			// 
+			if (ins[i].is_out_struct == 1)
+			{
+				FUNCSTRUCT *tempStruct = ins[i].out_struct;
+				for (int j = 0; j < ins[i].n_out_struct_len; j++)
+				{
 					// std::wstring tempWStr((wchar_t *) tempStruct[j].key);
 					// std::string(tempWStr.begin(), tempWStr.end());
 					// std::cout << "freeing key: " << std::string(tempWStr.begin(), tempWStr.end()) << std::endl;

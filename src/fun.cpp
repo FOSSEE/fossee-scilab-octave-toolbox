@@ -30,9 +30,9 @@ extern "C"
 	int fun(FUNCARGS *inp, FUNCCALL *funcall)
 	{
 
-		static octave::interpreter interpreter;
+		static octave::interpreter interpreter;															
 		bool status = interpreter.initialized();
-
+		// Check octave interpreter loaded
 		if (status == false)
 		{
 			interpreter.initialize();
@@ -55,8 +55,10 @@ extern "C"
 			char str_pkg[20];
 			int pkg = 0;
 			int nouts;
+			// Format the input data values into data type acceptable by Octave
 			for (l = 0; l < funcall->n_in_arguments; l++)
 			{
+				//check if Input type is Double
 				if (inp[l].type == TYPE_DOUBLE)
 				{
 					if (inp[l].is_in_cmplx == 1)
@@ -92,6 +94,7 @@ extern "C"
 						in(l - str_count) = inMatrix_x;
 					}
 				}
+				//check if Input type is string
 				else if (inp[l].type == TYPE_STRING)
 				{
 					//std::cout << "In fun string. l is : " << l << '\n';
@@ -113,6 +116,7 @@ extern "C"
 
 					//std::cout << "String is: " << c << '\n';
 				}
+				//check if Input type is struct
 				else if (inp[l].type == TYPE_STRUCT){
 					FUNCSTRUCT* inStruct = inp[l].in_struct;
 
@@ -177,17 +181,18 @@ extern "C"
 				//std::cout << "loading package " << str_pkg << '\n';
 				octave::feval("pkg", ovl("load", str_pkg), 0);
 			}
-
+			// Use feval to compute the required values
 			octave_value_list out = octave::feval(str_fun, in, funcall->n_out_user);
 
 			int row = 0;
 			int col = 0;
 			nouts = out.length();
 			funcall->n_out_arguments = nouts;
-			// std::cout << "funcall->n_out_arguments is: " << funcall->n_out_arguments << '\n';
-
+			// DEBUG // std::cout << "funcall->n_out_arguments is: " << funcall->n_out_arguments << '\n';
+			// Format and set the output data values from Octave into the FUNCARGS
 			for (unsigned int ii = 0; ii < nouts; ii++)
 			{
+				//Format complex data
 				if (out(ii).iscomplex() == 1)
 				{
 					inp[ii].is_out_cmplx = 1;
@@ -216,6 +221,7 @@ extern "C"
 						}
 					}
 				}
+				//Format Struct data
 				else if(out(ii).isstruct()){
 					inp[ii].is_out_struct = 1;
 					
@@ -335,6 +341,7 @@ extern "C"
 				}
 			}
 		}
+		// Exception handling Octave
 		catch (const octave::exit_exception &ex)
 		{
 			std::cerr << "Octave interpreter exited with status = "
@@ -343,7 +350,7 @@ extern "C"
 		}
 		catch (const octave::execution_exception &)
 		{
-			//std::cerr << "error encountered in Octave evaluator!" << std::endl;
+			//DEBUG//std::cerr << "error encountered in Octave evaluator!" << std::endl;
 			return 1;
 		}
 		return 0;
